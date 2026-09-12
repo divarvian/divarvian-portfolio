@@ -1,0 +1,155 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { ui } from "../../i18n/ui";
+import "../../styles/site.css";
+const lang = 'en' as const;
+const t = ui[lang].uses;
+const title = lang === 'en' ? 'Setup — Diva Arviansyah | divarvian.my.id' : 'Setup — Diva Arviansyah | divarvian.my.id';
+const desc = t.desc;
+---
+
+<Layout lang={lang} title={title} description={desc} canonical={lang === 'en' ? 'https://divarvian.my.id/en/uses' : 'https://divarvian.my.id/uses'}>
+  <SiteHeader lang={lang} />
+  <main id="main" class="section wrap">
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h2>{t.title}</h2>
+      </div>
+      <p class="section-desc">{t.desc}</p>
+    </div>
+    <div class="win win-dark fastfetch-win">
+      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">fastfetch — arvian@Fedora</span><span class="win-spacer"></span></div>
+      <div class="win-body">
+        <p class="ff-cmd"><span class="ff-prompt">arvian@Fedora</span><span class="ff-sep">:</span><span class="ff-path">~</span><span class="ff-dollar">$</span> fastfetch</p>
+        <div class="ff-grid">
+          <div class="ff-art" aria-hidden="true">
+            <pre class="ff-logo"><span class="ff-blue">             .',;::::;,'.</span>
+<span class="ff-blue">         .';:cccccccccccc:;,.</span>
+<span class="ff-blue">      .;cccccccccccccccccccccc;.</span>
+<span class="ff-blue">    .:cccccccccccccccccccccccccc:.</span>
+<span class="ff-blue">  .;ccccccccccccc;</span><span class="ff-white">.:dddl:.</span><span class="ff-blue">;ccccccc;.</span>
+<span class="ff-blue"> .:ccccccccccccc;</span><span class="ff-white">OWMKOOXMWd</span><span class="ff-blue">;ccccccc:.</span>
+<span class="ff-blue">.:ccccccccccccc;</span><span class="ff-white">KMMc</span><span class="ff-blue">;cc;</span><span class="ff-white">xMMc</span><span class="ff-blue">;ccccccc:.</span>
+<span class="ff-blue">,cccccccccccccc;</span><span class="ff-white">MMM.</span><span class="ff-blue">;cc;;</span><span class="ff-white">WW:</span><span class="ff-blue">;cccccccc,</span>
+<span class="ff-blue">:cccccccccccccc;</span><span class="ff-white">MMM.</span><span class="ff-blue">;cccccccccccccccc:</span>
+<span class="ff-blue">:ccccccc;</span><span class="ff-white">oxOOOo;</span><span class="ff-white">MMM000k.</span><span class="ff-blue">;cccccccccccc:</span>
+<span class="ff-blue">cccccc;</span><span class="ff-white">0MMKxdd:</span><span class="ff-blue">;</span><span class="ff-white">MMMkddc.</span><span class="ff-blue">;cccccccccccc;</span>
+<span class="ff-blue">ccccc;</span><span class="ff-white">XMO'</span><span class="ff-blue">;cccc;</span><span class="ff-white">MMM.</span><span class="ff-blue">;cccccccccccccccc'</span>
+<span class="ff-blue">ccccc;</span><span class="ff-white">MMo</span><span class="ff-blue">;ccccc;</span><span class="ff-white">MMW.</span><span class="ff-blue">;ccccccccccccccc;</span>
+<span class="ff-blue">ccccc;</span><span class="ff-white">0MNc</span><span class="ff-blue">.ccc.</span><span class="ff-white">xMMd</span><span class="ff-blue">;ccccccccccccccc;</span>
+<span class="ff-blue">cccccc;</span><span class="ff-white">dNMWXXXWM0:</span><span class="ff-blue">;cccccccccccccc:,</span>
+<span class="ff-blue">cccccccc;.:odl:.;cccccccccccccc:,.</span>
+<span class="ff-blue">ccccccccccccccccccccccccccccc:'.</span>
+<span class="ff-blue">:ccccccccccccccccccccccc:;,..</span>
+<span class="ff-blue"> ':cccccccccccccccc::;,.</span></pre>
+            <div class="ff-palette"><span style="background:#51A2FF"></span><span style="background:#E8A0A0"></span><span style="background:#E9D48A"></span><span style="background:#9BCFB0"></span><span style="background:#8BC4A8"></span><span style="background:#C4B5FD"></span></div>
+          </div>
+          <div class="ff-info">
+            <p class="ff-head"><span>arvian</span>@<span>Fedora</span></p>
+            <p class="ff-sep-line">-------------</p>
+            <dl>
+              <div><dt>OS</dt><dd>Fedora Linux 44 (Workstation Edition)</dd></div>
+              <div><dt>Host</dt><dd>Strix 15 GL503GE</dd></div>
+              <div><dt>Kernel</dt><dd>7.1.13-200.fc44.x86_64</dd></div>
+              <div><dt>Shell</dt><dd>bash 5.3.9</dd></div>
+              <div><dt>DE</dt><dd>GNOME 50.4 · Wayland</dd></div>
+              <div><dt>Terminal</dt><dd>Ptyxis 50.1</dd></div>
+              <div><dt>Browser</dt><dd>Firefox</dd></div>
+              <div><dt>Editor</dt><dd>VS Code · Adwaita Mono</dd></div>
+              <div><dt>CPU</dt><dd>Intel i7-8750H · 12 threads</dd></div>
+              <div><dt>GPU</dt><dd>NVIDIA GTX 1050 Ti · Intel UHD 630</dd></div>
+              <div><dt>Memory</dt><dd>16 GiB · btrfs · 120 Hz</dd></div>
+              <div><dt>Mobile Dev</dt><dd>{t.mobileItems.map((x) => x.l).join(', ')}</dd></div>
+              <div><dt>Backend & Tools</dt><dd>{t.backendItems.map((x) => x.l).join(', ')}</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <SiteFooter lang={lang} />
+  <script>
+    (function(){const K='theme';function apply(d){document.documentElement.classList.toggle('dark',d);document.documentElement.setAttribute('data-theme',d?'dark':'light');try{localStorage.setItem(K,d?'dark':'light')}catch{}document.querySelectorAll('#themeBtn').forEach(b=>{b.setAttribute('aria-pressed',String(d))});}try{const s=localStorage.getItem(K);if(s)apply(s==='dark');else if(window.matchMedia)apply(window.matchMedia('(prefers-color-scheme: dark)').matches);}catch{}document.getElementById('themeBtn')?.addEventListener('click',()=>apply(!document.documentElement.classList.contains('dark')));})();
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const open = menu.hasAttribute('hidden');
+        if (open) { menu.removeAttribute('hidden'); btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Tutup menu'); }
+        else { menu.setAttribute('hidden', ''); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Buka menu'); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.hasAttribute('hidden')) {
+          menu.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Buka menu');
+          btn.focus();
+        }
+      });
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        menu.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Buka menu');
+      }));
+      document.addEventListener('click', (e) => {
+        const t = e.target;
+        if (!menu.hasAttribute('hidden') && !menu.contains(t) && !btn.contains(t)) {
+          menu.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Buka menu');
+        }
+      });
+    }
+  </script>
+  <style>
+    .fastfetch-win{margin-bottom:14px}
+    .ff-cmd{margin:0;font-family:JetBrains Mono,monospace;font-size:11px;color:rgba(255,255,255,.92);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .ff-prompt{color:#8BC4A8;font-weight:600}
+    .ff-sep{color:rgba(255,255,255,.5)}
+    .ff-path{color:#E9D48A}
+    .ff-dollar{color:rgba(255,255,255,.7);margin-left:2px}
+    .ff-grid{display:grid;grid-template-columns:300px 1fr;gap:22px;margin-top:14px;align-items:start}
+    .ff-art{display:grid;gap:12px;justify-items:start}
+    .ff-logo{margin:0;font-family:JetBrains Mono,monospace;font-size:9.5px;line-height:1.2;white-space:pre;letter-spacing:0.01em;overflow:hidden;max-width:100%}
+    .ff-blue{color:#51A2FF}
+    .ff-white{color:white}
+    .ff-palette{display:flex;gap:5px}
+    .ff-palette span{width:14px;height:10px;border-radius:2px;display:block;border:1px solid rgba(255,255,255,.12)}
+    .ff-head{margin:0;font-family:JetBrains Mono,monospace;font-size:12px;font-weight:600;color:white}
+    .ff-head span:first-child{color:#51A2FF}
+    .ff-head span:last-child{color:#E9D48A}
+    .ff-sep-line{margin:2px 0 8px;color:rgba(255,255,255,.22);font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:0.04em}
+    .ff-info dl{margin:0;display:grid;gap:4px;font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.6}
+    .ff-info dl div{display:flex;gap:8px;flex-wrap:wrap}
+    .ff-info dt{color:#9BCFB0;font-weight:600;min-width:110px;flex:0 0 auto}
+    .ff-info dd{margin:0;color:rgba(255,255,255,.78);flex:1 1 auto;min-width:0;word-break:break-word}
+    .ff-next-prompt{margin:12px 0 0;font-family:JetBrains Mono,monospace;font-size:11px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+    .ff-cursor{animation:blink 1s step-end infinite}
+    @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+    .uses-detail{margin-top:2px}
+    @media (max-width: 860px){
+      .ff-grid{grid-template-columns:1fr;gap:14px}
+      .ff-logo{font-size:8.5px}
+      .fastfetch-win .win-body{padding:16px}
+      .ff-info dt{min-width:90px}
+      .ff-info dl{gap:6px}
+      .ff-cmd{font-size:10px;gap:4px}
+      .ff-head{font-size:11px}
+      .ff-sep-line{margin:2px 0 6px}
+    }
+    @media (max-width: 480px){
+      .ff-grid{gap:8px}
+      .ff-info dt{min-width:auto}
+      .ff-info dl{gap:2px}
+      .ff-info dl div{gap:4px}
+      .ff-cmd{font-size:9px}
+      .ff-head{font-size:10px}
+      .ff-info dd{font-size:10px}
+      .ff-logo{font-size:7px}
+    }
+  </style>
+</Layout>

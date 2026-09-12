@@ -10,7 +10,7 @@ export function prefixFor(lang: Lang) {
 export const ui = {
   id: {
     skip: 'Loncat ke konten',
-    nav: { work: 'Project', stack: 'Teknologi', about: 'Tentang', contact: 'Kontak', github: 'GitHub', contactCta: 'Hubungi' },
+    nav: { work: 'Project', stack: 'Teknologi', about: 'Tentang', contact: 'Kontak', uses: 'Setup', github: 'GitHub', contactCta: 'Hubungi' },
     langLabel: 'EN',
     langAria: 'Ganti ke bahasa Inggris',
     hero: {
@@ -51,12 +51,17 @@ export const ui = {
       cardLabel: 'Sekilas', cardItems: [{ dt: 'Prodi', dd: 'PTI, FILKOM UB' }, { dt: 'Komunitas', dd: 'Raion Community' }, { dt: 'Peran', dd: 'Mobile Engineer' }, { dt: 'Email', dd: 'divarvian@gmail.com', href: 'mailto:divarvian@gmail.com' }],
     },
     contact: { eyebrow: 'Available for work', title: 'Get In Touch', desc: 'Punya project di kepala atau cuma mau sapa? Feel free to reach out, aku terbuka untuk magang dan kolaborasi baru.', copyEmail: 'Salin email', copyOk: 'Alamat email tersalin', copyFail: 'Salin manual: divarvian@gmail.com' },
+    uses: {
+      eyebrow: 'Uses', title: 'Setup yang aku pakai', desc: 'Perangkat dan tools sehari-hari buat ngoding, kuliah, dan ngulik. Selalu Fedora.',
+      mobileItems: [{ l: 'Kotlin, Jetpack Compose' }, { l: 'Flutter, Dart' }, { l: 'Java' }, { l: 'C++' }],
+      backendItems: [{ l: 'Supabase' }, { l: 'Git' }],
+    },
     footer: { note: 'Portfolio Diva Arviansyah, PTI FILKOM UB, Mobile Engineer di Raion Community. Dibuat pakai Astro.', pages: 'Halaman', links: 'Tautan', copyright: '© 2026 Diva Arviansyah. All rights reserved.', built: 'Dibuat dengan' },
     notFound: { badge: '404 — Halaman tidak ada', title: 'Nyasar ya', lead: 'Tautan yang kamu buka tidak ditemukan. Mungkin salah ketik atau halaman sudah dipindah. Balik ke beranda, atau langsung hubungi aku.', back: 'Kembali ke beranda', contact: 'Hubungi', orTry: 'Atau coba ke', sideTitle: 'Masih di sekitar sini', sideText: 'Portfolio Diva Arviansyah, PTI FILKOM UB, Mobile Engineer di Raion Community.', sideList: [{ k: 'Email', v: 'divarvian@gmail.com' }, { k: 'GitHub', v: 'github.com/divarvian' }, { k: 'Lokasi', v: 'Malang' }] },
   },
   en: {
     skip: 'Skip to content',
-    nav: { work: 'Work', stack: 'Stack', about: 'About', contact: 'Contact', github: 'GitHub', contactCta: 'Contact' },
+    nav: { work: 'Work', stack: 'Stack', about: 'About', contact: 'Contact', uses: 'Setup', github: 'GitHub', contactCta: 'Contact' },
     langLabel: 'ID',
     langAria: 'Switch to Indonesian',
     hero: {
@@ -97,6 +102,11 @@ export const ui = {
       cardLabel: 'At a glance', cardItems: [{ dt: 'Program', dd: 'ITE, FILKOM UB' }, { dt: 'Community', dd: 'Raion Community' }, { dt: 'Role', dd: 'Mobile Engineer' }, { dt: 'Email', dd: 'divarvian@gmail.com', href: 'mailto:divarvian@gmail.com' }],
     },
     contact: { eyebrow: 'Available for work', title: 'Get In Touch', desc: 'Have a project in mind or just want to say hi? Feel free to reach out. I am open for internships and new collaborations.', copyEmail: 'Copy email', copyOk: 'Email copied', copyFail: 'Copy manually: divarvian@gmail.com' },
+    uses: {
+      eyebrow: 'Uses', title: 'My Setup', desc: 'Everyday tools for coding, studying, and tinkering. Fedora all the way.',
+      mobileItems: [{ l: 'Kotlin, Jetpack Compose' }, { l: 'Flutter, Dart' }, { l: 'Java' }, { l: 'C++' }],
+      backendItems: [{ l: 'Supabase' }, { l: 'Git' }],
+    },
     footer: { note: 'Portfolio of Diva Arviansyah, PTI FILKOM UB, Mobile Engineer at Raion Community. Built with Astro.', pages: 'Pages', links: 'Links', copyright: '© 2026 Diva Arviansyah. All rights reserved.', built: 'Built with' },
     notFound: { badge: '404 — Page not found', title: 'Looks lost', lead: 'The link you opened was not found. Maybe a typo or the page was moved. Head back home or get in touch.', back: 'Back to home', contact: 'Contact', orTry: 'Or try', sideTitle: 'Still around here', sideText: 'Portfolio of Diva Arviansyah, PTI FILKOM UB, Mobile Engineer at Raion Community.', sideList: [{ k: 'Email', v: 'divarvian@gmail.com' }, { k: 'GitHub', v: 'github.com/divarvian' }, { k: 'Location', v: 'Malang' }] },
   },

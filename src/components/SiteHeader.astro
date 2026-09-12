@@ -4,7 +4,15 @@ interface Props { lang?: Lang }
 const lang = Astro.props.lang ?? 'id';
 const t = ui[lang];
 const p = prefixFor(lang);
-const switchHref = lang === 'id' ? '/en/' : '/';
+const pathname = Astro.url.pathname;
+const search = Astro.url.search;
+let switchHref: string;
+if (lang === 'id') {
+  switchHref = pathname === '/' ? '/en/' : `/en${pathname}`;
+} else {
+  switchHref = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+}
+switchHref += search;
 const switchLabel = t.langLabel;
 const switchAria = t.langAria;
 ---
@@ -19,6 +27,7 @@ const switchAria = t.langAria;
       <a href={`${p}/#stack`}>{t.nav.stack}</a>
       <a href={`${p}/#about`}>{t.nav.about}</a>
       <a href={`${p}/#contact`}>{t.nav.contact}</a>
+      <a href={`${p}/uses`}>{t.nav.uses}</a>
     </nav>
     <div class="head-actions">
       <a class="lang-switch" href={switchHref} aria-label={switchAria}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 0 4 10 15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0-4-10A15.3 15.3 0 0 0 12 2z"/></svg><span>{switchLabel}</span></a>
@@ -39,6 +48,7 @@ const switchAria = t.langAria;
       <a href={`${p}/#stack`}>{t.nav.stack}</a>
       <a href={`${p}/#about`}>{t.nav.about}</a>
       <a href={`${p}/#contact`}>{t.nav.contact}</a>
+      <a href={`${p}/uses`}>{t.nav.uses}</a>
     </nav>
     <div class="mobile-ctas">
       <a class="btn btn-primary" href="mailto:divarvian@gmail.com">{t.nav.contactCta}</a>
