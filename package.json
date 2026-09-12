@@ -12,9 +12,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.3.2"
+    "astro": "^7.3.2",
+    "simple-icons": "^13.0.0"
   },
   "allowScripts": {
-    "esbuild": true
+    "esbuild": true,
+    "simple-icons": true
   }
 }

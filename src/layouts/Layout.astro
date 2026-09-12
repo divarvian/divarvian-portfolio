@@ -52,11 +52,15 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
     <meta name="twitter:image" content={ogImageURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <meta name="author" content="Diva Arviansyah" />
+    <meta name="robots" content="index, follow" />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#C2410C" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14181E" media="(prefers-color-scheme: dark)" />
     <script is:inline>
       (function(){try{var s=localStorage.getItem('theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var d=s?s==='dark':m;if(d){document.documentElement.classList.add('dark')}document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}})();
     </script>
@@ -121,7 +125,61 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
   </head>
   <body>
     <a class="skip" href="#main">Loncat ke konten</a>
+    <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true"></div>
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Kembali ke atas" title="Kembali ke atas" hidden>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
+    <div class="mouse-dot" id="mouseDot" aria-hidden="true"></div>
     <slot />
+    <script is:inline>
+      (function(){
+        try{
+          if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if(window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+          var glow=document.getElementById('mouseGlow');
+          var dot=document.getElementById('mouseDot');
+          if(!glow||!dot) return;
+          var gx=innerWidth/2,gy=160,dx=gx,dy=gy,tx=gx,ty=gy,show=false,raf=null;
+          function loop(){
+            gx+=(tx-gx)*0.08; gy+=(ty-gy)*0.08;
+            dx+=(tx-dx)*0.35; dy+=(ty-dy)*0.35;
+            glow.style.transform='translate3d(calc('+gx+'px - 50%), calc('+gy+'px - 50%), 0)';
+            dot.style.transform='translate3d(calc('+dx+'px - 50%), calc('+dy+'px - 50%), 0)';
+            if(show) raf=requestAnimationFrame(loop); else raf=null;
+          }
+          function wake(){ if(!show){show=true;glow.style.opacity='1';dot.style.opacity='1';} if(!raf) raf=requestAnimationFrame(loop); }
+          addEventListener('mousemove',function(e){ tx=e.clientX; ty=e.clientY; wake(); },{passive:true});
+          document.addEventListener('mouseleave',function(){ show=false; glow.style.opacity='0'; dot.style.opacity='0'; if(raf){cancelAnimationFrame(raf);raf=null;} });
+          document.addEventListener('mouseover',function(e){
+            var h=e.target&&e.target.closest?e.target.closest('a,button'):null;
+            dot.classList.toggle('is-hover',!!h);
+          },{passive:true});
+        }catch(e){}
+        })();
+        (function(){
+          try{
+            var scrollEl=document.getElementById('scrollIndicator');
+            var backBtn=document.getElementById('backToTop');
+            var toastEl=document.getElementById('toast');
+            if(!scrollEl||!backBtn||!toastEl) return;
+            var isEn=location.pathname.indexOf('/en')===0;
+            var toastMsg=isEn?'Email copied to clipboard':'Email disalin ke clipboard';
+            var backLabel=isEn?'Back to top':'Kembali ke atas';
+            backBtn.setAttribute('aria-label',backLabel);
+            backBtn.setAttribute('title',backLabel);
+            function showToast(msg){ toastEl.textContent=msg; toastEl.removeAttribute('hidden'); setTimeout(function(){ toastEl.setAttribute('hidden',''); },2200); }
+            window.toast=showToast;
+            var copyBtns=document.querySelectorAll('.copy-btn');
+            copyBtns.forEach(function(btn){ btn.addEventListener('click',function(e){ showToast(toastMsg); }); });
+            function scrollUpdate(){ var scrolled=window.scrollY; var total=document.documentElement.scrollHeight-window.innerHeight; var progress=scrolled/total; scrollEl.style.transform='scaleX('+progress+')'; backBtn.hidden=scrolled<300; }
+            scrollUpdate();
+            window.addEventListener('scroll',scrollUpdate,{passive:true});
+            backBtn.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+          }catch(e){}
+        })();
+    </script>
     <style is:global>
       :root{
         --paper:#FDFCF8;
@@ -157,6 +215,23 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
       .skip:focus{left:16px;top:16px;width:auto;height:auto;background:var(--ink);color:white;padding:10px 14px;border-radius:999px;z-index:99}
       ::selection{background:var(--stone)}
       @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto !important;transition:none !important}}
+      .mouse-glow{position:fixed;top:0;left:0;width:400px;height:400px;background:radial-gradient(circle,rgba(194,65,12,.08) 0%,transparent 70%);pointer-events:none;z-index:1;border-radius:50%;transform:translate3d(-50%,-50%,0);opacity:0;transition:opacity .3s ease}
+      .mouse-dot{position:fixed;top:0;left:0;width:10px;height:10px;background:#C2410C;border-radius:50%;pointer-events:none;z-index:2;transform:translate3d(-50%,-50%,0);opacity:0;transition:opacity .3s ease,width .2s ease,height .2s ease,background .2s ease}
+      .mouse-dot.is-hover{width:16px;height:16px;background:#9A3412}
+      .scroll-indicator{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C2410C 0%,#9A3412 100%);transform-origin:left;transform:scaleX(0);z-index:99;transition:transform .1s ease}
+      .back-to-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--paper);border:1px solid var(--stone-2);display:grid;place-items:center;cursor:pointer;z-index:10;opacity:0;transform:translateY(20px) scale(0.9);transition:opacity .3s ease,transform .3s ease,background .2s ease;box-shadow:0 4px 14px rgba(20,24,30,.15)}
+      .back-to-top:not([hidden]){opacity:1;transform:translateY(0) scale(1)}
+      .back-to-top:hover{background:var(--clay);border-color:var(--clay)}
+      .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:var(--paper);border:1px solid var(--stone-2);padding:14px 20px;border-radius:999px;font-size:13px;z-index:100;box-shadow:0 8px 24px rgba(20,24,30,.25);transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:0;pointer-events:none;white-space:nowrap}
+      .toast:not([hidden]){opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+      @media print{
+        .site-head,.site-foot,.back-to-top,.toast,.mouse-glow,.mouse-dot,.scroll-indicator,.skip,.btn,.hero-badges,.hero-meta,.activity-card,.cta-row{display:none !important}
+        body{background:white;color:black}
+        .win{border:1px solid #ddd;page-break-inside:avoid}
+        .section{padding-block:12px}
+        a{color:black;text-decoration:underline}
+        @page{margin:2cm}
+      }
     </style>
   </body>
 </html>

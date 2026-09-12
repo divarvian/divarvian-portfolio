@@ -79,28 +79,28 @@ const desc = t.desc;
     if (btn && menu) {
       btn.addEventListener('click', () => {
         const open = menu.hasAttribute('hidden');
-        if (open) { menu.removeAttribute('hidden'); btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Tutup menu'); }
-        else { menu.setAttribute('hidden', ''); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Buka menu'); }
+        if (open) { menu.removeAttribute('hidden'); btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', isEn ? 'Close menu' : 'Tutup menu'); }
+        else { menu.setAttribute('hidden', ''); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', isEn ? 'Open menu' : 'Buka menu'); }
       });
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !menu.hasAttribute('hidden')) {
           menu.setAttribute('hidden', '');
           btn.setAttribute('aria-expanded', 'false');
-          btn.setAttribute('aria-label', 'Buka menu');
+          btn.setAttribute('aria-label', isEn ? 'Open menu' : 'Buka menu');
           btn.focus();
         }
       });
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
         menu.setAttribute('hidden', '');
         btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-label', 'Buka menu');
+        btn.setAttribute('aria-label', isEn ? 'Open menu' : 'Buka menu');
       }));
       document.addEventListener('click', (e) => {
         const t = e.target;
         if (!menu.hasAttribute('hidden') && !menu.contains(t) && !btn.contains(t)) {
           menu.setAttribute('hidden', '');
           btn.setAttribute('aria-expanded', 'false');
-          btn.setAttribute('aria-label', 'Buka menu');
+          btn.setAttribute('aria-label', isEn ? 'Open menu' : 'Buka menu');
         }
       });
     }

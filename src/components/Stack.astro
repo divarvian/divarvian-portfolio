@@ -3,12 +3,36 @@ import { ui, type Lang } from "../i18n/ui";
 interface Props { lang?: Lang }
 const lang = Astro.props.lang ?? 'id';
 const t = ui[lang].stack;
+
+const techLogos = [
+  { name: 'Kotlin', color: '#7F52FF', slug: 'kotlin' },
+  { name: 'Flutter', color: '#02569B', slug: 'flutter' },
+  { name: 'Java', color: '#007396', slug: 'java' },
+  { name: 'C++', color: '#00599C', slug: 'c-plusplus' },
+  { name: 'JavaScript', color: '#F7DF1E', slug: 'javascript' },
+  { name: 'Laravel', color: '#FF2D20', slug: 'laravel' },
+  { name: 'Go', color: '#00ADD8', slug: 'go' },
+  { name: 'Astro', color: '#FF5D01', slug: 'astro' },
+  { name: 'Supabase', color: '#3ECF8E', slug: 'supabase' },
+  { name: 'Git', color: '#F1502F', slug: 'git' },
+  { name: 'Fedora', color: '#51A2DA', slug: 'fedora' }
+];
 ---
 <section id="stack" class="section wrap stack reveal" data-delay="1">
   <div class="stack-intro">
     <p class="eyebrow">{t.eyebrow}</p>
     <h2>{t.title}</h2>
     <p>{t.desc}</p>
+  </div>
+  <div class="tech-logos">
+    {techLogos.map((tech) => (
+      <div class="tech-logo" style={`--tech-color: ${tech.color}`}>
+        <div class="tech-icon">
+          <img src={`https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/${tech.slug}/default.svg`} alt={tech.name} loading="lazy" />
+        </div>
+        <span>{tech.name}</span>
+      </div>
+    ))}
   </div>
   <div class="stack-grid">
     <div class="stack-card win">
@@ -23,5 +47,21 @@ const t = ui[lang].stack;
       <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">backend.sh — arvian@fedora</span><span class="win-spacer"></span></div>
       <div class="win-body"><h3>{t.backendTitle}</h3><ul>{t.backendItems.map((x) => <li><span>{x.l}</span><span>{x.r}</span></li>)}</ul><p class="meta-k" style="margin-top:10px">{t.countLabel}</p></div>
     </div>
-  </div>
+   </div>
+  <style>
+    .tech-logos{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:28px;justify-content:flex-start;align-items:center}
+    .tech-logo{display:flex;align-items:center;gap:12px;padding:10px 16px;background:white;border:1px solid var(--stone);border-radius:10px;cursor:pointer;transition:all .28s ease;color:var(--muted);min-height:48px}
+    .tech-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex:0 0 32px;background:#f0f0f0;border-radius:6px;transition:background .28s ease}
+    .tech-icon img{width:24px;height:24px;object-fit:contain;display:block;filter:grayscale(1);opacity:.7;transition:filter .28s ease,opacity .28s ease}
+    .tech-logo span{font-size:13px;font-weight:500;white-space:nowrap;line-height:1}
+    .tech-logo:hover{border-color:var(--tech-color);background:white;color:var(--tech-color);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+    .tech-logo:hover .tech-icon{background:#f8f8f8}
+    .tech-logo:hover .tech-icon img{filter:none;opacity:1}
+    html.dark .tech-logo{background:#1B1F2A;border-color:#252F3F;color:var(--muted-2)}
+    html.dark .tech-icon{background:#1A1F2A}
+    html.dark .tech-logo .tech-icon img{filter:grayscale(1);opacity:.6}
+    html.dark .tech-logo:hover{background:#1B1F2A;border-color:var(--tech-color);color:white}
+    html.dark .tech-logo:hover .tech-icon{background:#151A22}
+    html.dark .tech-logo:hover .tech-icon img{filter:none;opacity:1}
+  </style>
 </section>
