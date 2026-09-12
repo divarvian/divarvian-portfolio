@@ -1,0 +1,116 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import "../styles/site.css";
+---
+
+<Layout title="Tidak ditemukan - divarvian.my.id" description="Halaman tidak ditemukan di divarvian.my.id. Kembali ke beranda atau hubungi Diva.">
+  <SiteHeader />
+  <main id="main" class="notfound">
+    <div class="wrap notfound-wrap">
+      <div class="notfound-grid">
+        <div class="win win-dark notfound-term">
+          <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">bash — arvian@fedora: ~</span><span class="win-spacer"></span></div>
+          <div class="win-body">
+            <p class="term-cmd"><span class="term-prompt">arvian@fedora</span><span class="term-sep">:</span><span class="term-path">~</span><span class="term-dollar">$</span> cat ./404.log</p>
+            <p class="term-out">cat: ./404.log: No such file or directory — <span>exit 1</span></p>
+            <p class="eyebrow term-eyebrow">404 — Halaman tidak ada</p>
+            <h1 class="display notfound-title">Nyasar ya</h1>
+            <p class="lead notfound-lead">Tautan yang kamu buka tidak ditemukan. Mungkin salah ketik atau halaman sudah dipindah. Balik ke beranda, atau langsung hubungi aku.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="/">Kembali ke beranda</a>
+              <a class="btn btn-ghost" href="mailto:divarvian@gmail.com">Hubungi</a>
+            </div>
+            <div class="notfound-help">
+              <span class="meta-k term-meta">Atau coba ke</span>
+              <nav class="help-links" aria-label="Tautan cepat">
+                <a href="/#work">Project</a>
+                <a href="/#stack">Teknologi</a>
+                <a href="/#about">Tentang</a>
+                <a href="/#contact">Kontak</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="win side-card">
+          <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">info.sh — arvian@fedora</span><span class="win-spacer"></span></div>
+          <div class="win-body">
+            <p class="card-label">divarvian.my.id</p>
+            <p class="card-title">Masih di sekitar sini</p>
+            <p class="card-text">Portfolio Diva Arviansyah, PTI FILKOM UB, Mobile Engineer di Raion Community.</p>
+            <div class="side-divider" aria-hidden="true"></div>
+            <ul class="side-list">
+              <li><span>Email</span><span>divarvian@gmail.com</span></li>
+              <li><span>GitHub</span><span>github.com/divarvian</span></li>
+              <li><span>Lokasi</span><span>Malang</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <SiteFooter />
+  <script>
+    const btn = document.getElementById('menuBtn') as HTMLButtonElement | null;
+    const menu = document.getElementById('mobileMenu') as HTMLElement | null;
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const open = menu.hasAttribute('hidden');
+        if (open) { menu.removeAttribute('hidden'); btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Tutup menu'); }
+        else { menu.setAttribute('hidden', ''); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Buka menu'); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.hasAttribute('hidden')) {
+          menu.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Buka menu');
+          btn.focus();
+        }
+      });
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        menu.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Buka menu');
+      }));
+      document.addEventListener('click', (e) => {
+        const t = e.target as HTMLElement;
+        if (!menu.hasAttribute('hidden') && !menu.contains(t) && !btn.contains(t)) {
+          menu.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Buka menu');
+        }
+      });
+    }
+  </script>
+  <style>
+    .notfound{padding:32px 0 40px}
+    .notfound-grid{display:grid;grid-template-columns:1.35fr 0.72fr;gap:18px;align-items:start}
+    .notfound-term .win-body{display:grid;gap:0}
+    .term-cmd{margin:0;font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:0.02em;color:rgba(255,255,255,.9);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .term-prompt{color:#8BC4A8;font-weight:600}
+    .term-sep{color:rgba(255,255,255,.5)}
+    .term-path{color:#E9D48A}
+    .term-dollar{color:rgba(255,255,255,.7);margin-left:2px}
+    .term-out{margin:6px 0 0;font-family:JetBrains Mono,monospace;font-size:11px;color:rgba(255,255,255,.55);line-height:1.5}
+    .term-out span{color:#E8A0A0}
+    .term-eyebrow{margin:16px 0 0 !important;color:#E9A9A0 !important}
+    .notfound-title{color:white;font-size:clamp(32px,5vw,48px);line-height:1.0;margin:6px 0 0}
+    .notfound-lead{color:rgba(255,255,255,.68) !important;margin:10px 0 0 !important}
+    .notfound-term .cta-row{margin-top:18px}
+    .notfound-term .btn-ghost{background:transparent;border-color:rgba(255,255,255,.22);color:white}
+    .notfound-term .btn-ghost:hover{border-color:white}
+    .notfound-help{margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .term-meta{color:rgba(255,255,255,.5) !important}
+    .help-links{display:flex;flex-wrap:wrap;gap:8px}
+    .help-links a{font-size:12px;color:rgba(255,255,255,.85);text-decoration:none;padding:7px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.06);min-height:36px;display:inline-flex;align-items:center}
+    .help-links a:hover{border-color:rgba(255,255,255,.35);color:white}
+    @media (max-width: 860px){
+      .notfound-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 720px){
+      .notfound{padding:18px 0 24px}
+      .notfound-term .win-body{padding:16px}
+    }
+  </style>
+</Layout>

@@ -1,0 +1,470 @@
+---
+---
+<section id="activity" class="section wrap reveal" data-delay="1">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Aktivitas</p>
+      <h2>Kontribusi GitHub</h2>
+    </div>
+  </div>
+  <div class="activity-card win">
+    <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">contributions — arvian@fedora</span><span class="win-spacer"></span></div>
+    <div class="win-body">
+    <div class="activity-head">
+      <p class="activity-total"><span id="ghTotal" class="activity-total-num">—</span> contributions in the last year</p>
+      <a href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer" class="activity-handle">@divarvian</a>
+    </div>
+    <div id="ghState" class="activity-state" role="status" aria-live="polite">Memuat kontribusi...</div>
+    <div id="ghGraphWrap" class="activity-graph-wrap" tabindex="0" aria-label="GitHub contribution calendar" hidden>
+      <div id="ghGraph" class="activity-graph" role="img" aria-label="GitHub contributions in the last year"></div>
+    </div>
+    <div id="ghError" class="activity-error" hidden>
+      <p>Gagal memuat data GitHub. Coba lagi atau buka profil langsung.</p>
+      <div class="cta-row" style="margin-top:10px">
+        <button type="button" id="ghRetry" class="btn btn-ghost">Coba lagi</button>
+        <a href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Buka GitHub</a>
+      </div>
+    </div>
+    <div class="activity-foot">
+      <div class="activity-legend" aria-hidden="true"><span>Less</span><span class="cell" data-level="0"></span><span class="cell" data-level="1"></span><span class="cell" data-level="2"></span><span class="cell" data-level="3"></span><span class="cell" data-level="4"></span><span>More</span></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .activity-card.win{border:1px solid var(--stone);border-radius:var(--radius);background:white;overflow:hidden;padding:0}
+  .activity-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+  .activity-total{margin:0;font-size:13px;color:var(--muted)}
+  .activity-total-num{font-weight:600;color:var(--ink)}
+  .activity-handle{font-size:12px;color:var(--muted);text-decoration:none}
+  .activity-handle:hover{color:var(--ink)}
+  .activity-state{font-size:13px;color:var(--muted);padding:18px 0}
+  .activity-error{font-size:13px;color:var(--muted);padding:10px 0}
+  .activity-graph-wrap{overflow:hidden;padding-bottom:2px}
+  .activity-graph{display:flex;gap:2px;width:100%}
+  .activity-graph .col{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+  .activity-graph .cell{width:100%;aspect-ratio:1;height:auto;border-radius:3px;background:var(--stone);border:1px solid rgba(20,24,30,.06)}
+  .activity-graph .cell[data-level="0"]{background:#EBE8E3}
+  .activity-graph .cell[data-level="1"]{background:#C6E8D6}
+  .activity-graph .cell[data-level="2"]{background:#8BC4A8}
+  .activity-graph .cell[data-level="3"]{background:#3E8C65}
+  .activity-graph .cell[data-level="4"]{background:#16533A}
+  .activity-foot{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap}
+  .activity-legend{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:11px;color:var(--muted)}
+  .activity-legend .cell{width:11px;height:11px;border-radius:3px;border:1px solid rgba(20,24,30,.06);flex:none}
+  .activity-legend .cell[data-level="0"]{background:#EBE8E3}
+  .activity-legend .cell[data-level="1"]{background:#C6E8D6}
+  .activity-legend .cell[data-level="2"]{background:#8BC4A8}
+  .activity-legend .cell[data-level="3"]{background:#3E8C65}
+  .activity-legend .cell[data-level="4"]{background:#16533A}
+  .activity-graph{position:relative}
+  .activity-graph .cell{transition:background .28s cubic-bezier(.22,1,.36,1), border-color .28s cubic-bezier(.22,1,.36,1), opacity .36s ease}
+  .activity-graph .cell.snake-head{background:var(--ink) !important;border-color:var(--ink) !important;opacity:1 !important}
+  .activity-graph .cell.snake-body{background:#2B323B !important;border-color:#2B323B !important}
+  .activity-graph .cell.eaten{background:#EBE8E3 !important;border-color:rgba(20,24,30,.06) !important;opacity:1 !important}
+  @media (max-width: 720px){
+    .activity-card{padding:14px}
+    .activity-graph-wrap{overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+    .activity-graph{width:max-content;gap:4px}
+    .activity-graph .col{flex:none;gap:4px;min-width:auto}
+    .activity-graph .cell{width:14px;height:14px;aspect-ratio:auto;flex:none}
+  }
+</style>
+
+<script>
+  const totalEl = document.getElementById('ghTotal');
+  const stateEl = document.getElementById('ghState');
+  const wrapEl = document.getElementById('ghGraphWrap');
+  const graphEl = document.getElementById('ghGraph');
+  const errorEl = document.getElementById('ghError');
+  const retryBtn = document.getElementById('ghRetry');
+  const activitySection = document.getElementById('activity');
+  let snakeTimer: number | null = null;
+  let grid: HTMLElement[][] = [];
+  let snake: { c: number; r: number }[] = [];
+  const SNAKE_LEN = 4;
+
+  async function load() {
+    if (!totalEl || !stateEl || !wrapEl || !graphEl || !errorEl) return;
+    stateEl.hidden = false;
+    stateEl.textContent = 'Memuat kontribusi...';
+    wrapEl.hidden = true;
+    errorEl.hidden = true;
+    graphEl.innerHTML = '';
+    try {
+      const res = await fetch('https://github-contributions-api.jogruber.de/v4/divarvian?y=last', { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('fetch failed');
+      const data = await res.json();
+      const contributions = data.contributions || [];
+      const rawTotal = data.total;
+      const total = typeof rawTotal === 'number' ? rawTotal : (rawTotal && typeof rawTotal === 'object' ? (rawTotal.lastYear ?? 0) : 0);
+      if (!contributions.length) {
+        stateEl.textContent = 'Belum ada kontribusi yang bisa ditampilkan.';
+        if (totalEl) totalEl.textContent = String(total || 0);
+        return;
+      }
+      if (totalEl) totalEl.textContent = String(total);
+      stateEl.hidden = true;
+      wrapEl.hidden = false;
+      graphEl.setAttribute('aria-label', total + ' contributions in the last year');
+      let col: HTMLElement | null = null;
+      contributions.forEach((c: any, idx: number) => {
+        if (idx % 7 === 0) {
+          col = document.createElement('div');
+          col.className = 'col';
+          graphEl.appendChild(col);
+        }
+        const level = typeof c.level === 'number' ? c.level : levelFromCount(c.count || 0);
+        const el = document.createElement('div');
+        el.className = 'cell';
+        el.setAttribute('data-level', String(level));
+        el.title = (c.count || 0) + ' contributions on ' + formatDate(c.date);
+        if (col) col.appendChild(el);
+      });
+    } catch (e) {
+      stateEl.hidden = true;
+      wrapEl.hidden = true;
+      errorEl.hidden = false;
+      if (totalEl) totalEl.textContent = '—';
+    }
+  }
+
+  function levelFromCount(n: number) {
+    if (n === 0) return 0;
+    if (n <= 2) return 1;
+    if (n <= 5) return 2;
+    if (n <= 8) return 3;
+    return 4;
+  }
+  function formatDate(s: string) {
+    try { return new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); } catch (e) { return s; }
+  }
+
+  function buildGrid() {
+    if (!graphEl) return;
+    const cols = Array.from(graphEl.children) as HTMLElement[];
+    grid = cols.map((col) => Array.from(col.children) as HTMLElement[]);
+  }
+  function cellAt(c: number, r: number) {
+    if (c < 0 || c >= grid.length) return null;
+    const col = grid[c];
+    if (!col || r < 0 || r >= col.length) return null;
+    return col[r] ?? null;
+  }
+  function isGreen(c: number, r: number) {
+    const el = cellAt(c, r);
+    if (!el) return false;
+    if (el.dataset.eaten === '1') return false;
+    return el.dataset.level !== '0';
+  }
+  function hasGreen() {
+    for (let c = 0; c < grid.length; c++) for (let r = 0; r < 7; r++) if (isGreen(c, r)) return true;
+    return false;
+  }
+
+  function bfsPath(start: { c: number; r: number }, target: { c: number; r: number }, allowTail: boolean) {
+    const bodySet = new Set(snake.map((s) => s.c + ',' + s.r));
+    if (allowTail && snake.length) {
+      const tail = snake[snake.length - 1];
+      bodySet.delete(tail.c + ',' + tail.r);
+    }
+    const q: { c: number; r: number }[] = [start];
+    const seen = new Set<string>([start.c + ',' + start.r]);
+    const parent = new Map<string, string | null>();
+    parent.set(start.c + ',' + start.r, null);
+    while (q.length) {
+      const cur = q.shift()!;
+      if (cur.c === target.c && cur.r === target.r) {
+        const path: { c: number; r: number }[] = [];
+        let k: string | null = cur.c + ',' + cur.r;
+        while (k) { const [cc, rr] = k.split(',').map(Number); path.push({ c: cc, r: rr }); k = parent.get(k) ?? null; }
+        path.reverse();
+        return path;
+      }
+      const dirs = [{ c: 0, r: 1 }, { c: 0, r: -1 }, { c: 1, r: 0 }, { c: -1, r: 0 }];
+      for (const d of dirs) {
+        const nc = cur.c + d.c;
+        const nr = cur.r + d.r;
+        const nkey = nc + ',' + nr;
+        if (seen.has(nkey)) continue;
+        const el = cellAt(nc, nr);
+        if (!el) continue;
+        if (bodySet.has(nkey)) continue;
+        seen.add(nkey);
+        parent.set(nkey, cur.c + ',' + cur.r);
+        q.push({ c: nc, r: nr });
+      }
+    }
+    return null;
+  }
+
+  function canReachTailAfterMove(newSnake: { c: number; r: number }[]) {
+    if (newSnake.length < 2) return true;
+    const head = newSnake[0];
+    const tail = newSnake[newSnake.length - 1];
+    const bodySet = new Set(newSnake.map((s) => s.c + ',' + s.r));
+    bodySet.delete(tail.c + ',' + tail.r);
+    bodySet.delete(head.c + ',' + head.r);
+    const q: { c: number; r: number }[] = [head];
+    const seen = new Set<string>([head.c + ',' + head.r]);
+    while (q.length) {
+      const cur = q.shift()!;
+      if (cur.c === tail.c && cur.r === tail.r) return true;
+      const dirs = [{ c: 0, r: 1 }, { c: 0, r: -1 }, { c: 1, r: 0 }, { c: -1, r: 0 }];
+      for (const d of dirs) {
+        const nc = cur.c + d.c;
+        const nr = cur.r + d.r;
+        const nkey = nc + ',' + nr;
+        if (seen.has(nkey)) continue;
+        if (!cellAt(nc, nr)) continue;
+        if (bodySet.has(nkey)) continue;
+        seen.add(nkey);
+        q.push({ c: nc, r: nr });
+      }
+    }
+    return false;
+  }
+
+  function findBestGreenTarget(head: { c: number; r: number }) {
+    const candidates: { c: number; r: number }[] = [];
+    for (let c = 0; c < grid.length; c++) for (let r = 0; r < 7; r++) if (isGreen(c, r)) candidates.push({ c, r });
+    if (!candidates.length) return null;
+    candidates.sort((a, b) => {
+      if (a.c !== b.c) return a.c - b.c;
+      return Math.abs(a.r - head.r) - Math.abs(b.r - head.r);
+    });
+    let best: { target: { c: number; r: number }; path: { c: number; r: number }[] } | null = null;
+    let bestDist = Infinity;
+    for (const cand of candidates) {
+      const isSameCol = cand.c === head.c;
+      const path = bfsPath(head, cand, false);
+      if (!path) continue;
+      const dist = path.length;
+      if (dist > 80) continue;
+      const newSnakeAte = [{ c: cand.c, r: cand.r }, ...snake];
+      const safe = canReachTailAfterMove(newSnakeAte);
+      if (!safe) continue;
+      if (!best) {
+        best = { target: cand, path };
+        bestDist = dist;
+        if (isSameCol) break;
+        continue;
+      }
+      const bestSameCol = best.target.c === head.c;
+      const candSameCol = isSameCol;
+      if (candSameCol && !bestSameCol) {
+        best = { target: cand, path };
+        bestDist = dist;
+        break;
+      }
+      if (!candSameCol && bestSameCol) continue;
+      if (dist < bestDist) {
+        best = { target: cand, path };
+        bestDist = dist;
+      }
+    }
+    if (best) return best;
+    for (const cand of candidates) {
+      const path = bfsPath(head, cand, false);
+      if (!path) continue;
+      const newSnakeAte = [{ c: cand.c, r: cand.r }, ...snake];
+      if (!canReachTailAfterMove(newSnakeAte) && snake.length > 6) continue;
+      if (!best || path.length < best.path.length) best = { target: cand, path };
+    }
+    return best;
+  }
+
+  function findSafeMoveToTail(head: { c: number; r: number }) {
+    if (!snake.length) return null;
+    const tail = snake[snake.length - 1];
+    return bfsPath(head, tail, true);
+  }
+
+  function renderSnake() {
+    grid.flat().forEach((el) => {
+      if (!el) return;
+      const occupied = snake.some((s) => cellAt(s.c, s.r) === el);
+      el.classList.remove('snake-head', 'snake-body');
+      el.style.opacity = '';
+      if (occupied) {
+        el.classList.remove('eaten');
+      } else if (el.dataset.eaten === '1') {
+        el.classList.add('eaten');
+      } else {
+        el.classList.remove('eaten');
+      }
+    });
+    snake.forEach((pos, idx) => {
+      const el = cellAt(pos.c, pos.r);
+      if (!el) return;
+      el.classList.remove('eaten');
+      const opacities = [1, 0.62, 0.28, 0.08];
+      el.style.opacity = String(opacities[idx] ?? 0.08);
+      if (idx === 0) el.classList.add('snake-head');
+      else el.classList.add('snake-body');
+    });
+  }
+
+  function resetSnake() {
+    if (snakeTimer) { clearInterval(snakeTimer); snakeTimer = null; }
+    if (graphEl) graphEl.classList.remove('snaking');
+    grid.flat().forEach((el) => { if (el) { el.classList.remove('snake-head', 'snake-body', 'eaten'); delete el.dataset.eaten; (el as HTMLElement).style.opacity = ''; } });
+    snake = [];
+  }
+
+  function prepareSnake() {
+    buildGrid();
+    const all = grid.flat().filter(Boolean) as HTMLElement[];
+    resetSnake();
+    return all.length > 0 && !wrapEl?.hidden && hasGreen();
+  }
+
+  function playSnake() {
+    if (!graphEl || !grid.length) return;
+    if (snakeTimer) return;
+    if (!hasGreen()) return;
+    snake = [{ c: 0, r: 2 }, { c: 0, r: 1 }, { c: 0, r: 0 }];
+    snake = snake.filter((p) => cellAt(p.c, p.r));
+    while (snake.length < 3 && snake.length > 0) {
+      const last = snake[snake.length - 1];
+      const nc = last.c + 1;
+      if (cellAt(nc, last.r)) snake.push({ c: nc, r: last.r });
+      else break;
+    }
+    const startEl = cellAt(snake[0].c, snake[0].r);
+    if (startEl && startEl.dataset.level !== '0') {
+      startEl.dataset.eaten = '1';
+    }
+    renderSnake();
+    if (graphEl) graphEl.classList.add('snaking');
+    let currentPath: { c: number; r: number }[] | null = null;
+    function refreshPath(): boolean {
+      const head = snake[0];
+      const best = findBestGreenTarget(head);
+      if (best) {
+        currentPath = best.path;
+        return true;
+      }
+      const tailPath = findSafeMoveToTail(head);
+      if (tailPath && tailPath.length >= 2) {
+        currentPath = tailPath;
+        return true;
+      }
+      return false;
+    }
+    if (!refreshPath()) {
+      if (snakeTimer) clearInterval(snakeTimer);
+      snakeTimer = null;
+      if (graphEl) graphEl.classList.remove('snaking');
+      return;
+    }
+    let pathIdx = 1;
+    snakeTimer = window.setInterval(() => {
+      if (!graphEl || !snake.length) return;
+      if (!currentPath || pathIdx >= currentPath.length) {
+        if (!refreshPath()) {
+          if (snakeTimer) clearInterval(snakeTimer);
+          snakeTimer = null;
+          if (graphEl) graphEl.classList.remove('snaking');
+          return;
+        }
+        pathIdx = 1;
+        if (currentPath.length < 2) return;
+      }
+      const next = currentPath[pathIdx];
+      if (snake.some((s) => s.c === next.c && s.r === next.r)) {
+        if (!refreshPath()) {
+          if (snakeTimer) clearInterval(snakeTimer);
+          snakeTimer = null;
+          if (graphEl) graphEl.classList.remove('snaking');
+          return;
+        }
+        pathIdx = 1;
+        return;
+      }
+      snake.unshift(next);
+      const el = cellAt(next.c, next.r);
+      const ate = !!el && el.dataset.level !== '0' && el.dataset.eaten !== '1';
+      if (ate && el) {
+        el.dataset.eaten = '1';
+        currentPath = null;
+      }
+      while (snake.length > SNAKE_LEN) snake.pop();
+      if (!ate) pathIdx += 1;
+      renderSnake();
+      if (ate) {
+        const headNow = cellAt(snake[0].c, snake[0].r);
+        if (headNow) headNow.classList.add('snake-head');
+        if (!hasGreen()) {
+          grid.flat().forEach((e)=>{ if(e){ delete (e as HTMLElement).dataset.eaten; e.classList.remove('eaten'); }});
+          snake = [{c:0,r:2},{c:0,r:1},{c:0,r:0}].filter(p=>cellAt(p.c,p.r));
+          while(snake.length < 3 && snake.length > 0){ const last = snake[snake.length-1]; const nc = last.c + 1; if(cellAt(nc, last.r)) snake.push({c:nc,r:last.r}); else break; }
+          renderSnake();
+          currentPath = null;
+          refreshPath();
+          pathIdx = 1;
+          return;
+        }
+        refreshPath();
+        pathIdx = 1;
+      } else if (currentPath && pathIdx >= currentPath.length) {
+        currentPath = null;
+      }
+      if (el && wrapEl) {
+        const colEl = el.parentElement as HTMLElement | null;
+        if (colEl) {
+          const left = colEl.offsetLeft - wrapEl.clientWidth / 2 + 6;
+          wrapEl.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+        }
+      }
+      if (!hasGreen()) {
+        grid.flat().forEach((e)=>{ if(e){ delete (e as HTMLElement).dataset.eaten; e.classList.remove('eaten'); }});
+        snake = [{c:0,r:2},{c:0,r:1},{c:0,r:0}].filter(p=>cellAt(p.c,p.r));
+        while(snake.length < 3 && snake.length > 0){ const last = snake[snake.length-1]; const nc = last.c + 1; if(cellAt(nc, last.r)) snake.push({c:nc,r:last.r}); else break; }
+        renderSnake();
+        currentPath = null;
+        refreshPath();
+        pathIdx = 1;
+      }
+    }, 130);
+  }
+
+  function scheduleAutoPlay() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!graphEl || wrapEl?.hidden) return;
+    if (snakeTimer) return;
+    if (!hasGreen()) return;
+    playSnake();
+  }
+
+  if (activitySection && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) scheduleAutoPlay();
+      });
+    }, { threshold: 0.25 });
+    io.observe(activitySection);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (snakeTimer) { clearInterval(snakeTimer); snakeTimer = null; }
+    } else {
+      if (!snakeTimer && activitySection) {
+        const r = activitySection.getBoundingClientRect();
+        const visible = r.top < window.innerHeight && r.bottom > 0;
+        if (visible) scheduleAutoPlay();
+      }
+    }
+  });
+
+  const wrappedLoad = async () => {
+    resetSnake();
+    await load();
+    prepareSnake();
+    setTimeout(scheduleAutoPlay, 600);
+  };
+  retryBtn?.addEventListener('click', wrappedLoad);
+  wrappedLoad();
+</script>

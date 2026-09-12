@@ -1,0 +1,69 @@
+# build
+dist/
+
+# astro
+.astro/
+
+# deps
+node_modules/
+
+# lock is tracked (npm), ignore other managers
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# env
+.env
+.env.*
+!.env.example
+!.env.template
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# coverage / temp
+coverage/
+.nyc_output/
+tmp/
+temp/
+*.tmp
+*.tgz
+
+# os
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# editor
+.vscode/settings.json
+.idea/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# private agent/design docs - not for public repo
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+DESIGN.md
+
+# opencode - private, ignore all
+.opencode/
+
+# preview artifacts used locally
+mob.png
+mob*.png
+win-*.png
+kontak-*.png
+check-*.png
+desk-*.png

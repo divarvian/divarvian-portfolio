@@ -1,0 +1,116 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Hero from "../components/Hero.astro";
+import Work from "../components/Work.astro";
+import GitHubActivity from "../components/GitHubActivity.astro";
+import Stack from "../components/Stack.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import "../styles/site.css";
+---
+
+<Layout>
+  <SiteHeader />
+  <main id="main">
+    <Hero />
+    <Work />
+    <GitHubActivity />
+    <Stack />
+    <About />
+    <Contact />
+  </main>
+  <SiteFooter />
+  <noscript>
+    <style>
+      .reveal{opacity:1;transform:none}
+    </style>
+  </noscript>
+  <script>
+    const btn = document.getElementById('menuBtn') as HTMLButtonElement | null;
+    const menu = document.getElementById('mobileMenu') as HTMLElement | null;
+    const copyBtn = document.getElementById('copyEmail') as HTMLButtonElement | null;
+    const copyStatus = document.getElementById('copyStatus') as HTMLElement | null;
+
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const open = menu.hasAttribute('hidden');
+        if (open) { menu.removeAttribute('hidden'); btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Tutup menu'); }
+        else { menu.setAttribute('hidden', ''); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Buka menu'); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.hasAttribute('hidden')) {
+          menu.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Buka menu');
+          btn.focus();
+        }
+      });
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        menu.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Buka menu');
+      }));
+      document.addEventListener('click', (e) => {
+        const t = e.target as HTMLElement;
+        if (!menu.hasAttribute('hidden') && !menu.contains(t) && !btn.contains(t)) {
+          menu.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Buka menu');
+        }
+      });
+    }
+
+    if (copyBtn && copyStatus) {
+      copyBtn.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText('divarvian@gmail.com'); copyStatus.textContent = 'Alamat email tersalin'; }
+        catch { copyStatus.textContent = 'Gagal menyalin, silakan salin manual: divarvian@gmail.com'; }
+        setTimeout(() => copyStatus.textContent = '', 2500);
+      });
+    }
+    document.querySelectorAll('[data-copy-text]').forEach((btn) => {
+      if (btn.id === 'copyEmail') return;
+      btn.addEventListener('click', async () => {
+        const text = (btn as HTMLElement).dataset.copyText || '';
+        const copyIcon = btn.querySelector('.copy-icon') as HTMLElement | null;
+        const checkIcon = btn.querySelector('.check-icon') as HTMLElement | null;
+        try {
+          await navigator.clipboard.writeText(text);
+          copyIcon?.classList.add('hidden');
+          checkIcon?.classList.remove('hidden');
+          setTimeout(() => { copyIcon?.classList.remove('hidden'); checkIcon?.classList.add('hidden'); }, 1600);
+        } catch {}
+      });
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { (e.target as HTMLElement).classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      reveals.forEach((el) => io.observe(el));
+    } else {
+      reveals.forEach((el) => el.classList.add('in'));
+    }
+
+    const sections = ['work','stack','about','contact'].map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const navLinks = Array.from(document.querySelectorAll('.nav-desktop a[href*="#"], .mobile-menu a[href*="#"]')) as HTMLAnchorElement[];
+    if (sections.length && navLinks.length && 'IntersectionObserver' in window) {
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            navLinks.forEach(a => {
+              const href = a.getAttribute('href') || '';
+              const hash = href.includes('#') ? '#' + href.split('#').pop() : '';
+              if (hash === '#' + id) a.setAttribute('aria-current', 'true');
+              else if (hash.startsWith('#')) a.removeAttribute('aria-current');
+            });
+          }
+        });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      sections.forEach(s => spy.observe(s));
+    }
+  </script>
+</Layout>

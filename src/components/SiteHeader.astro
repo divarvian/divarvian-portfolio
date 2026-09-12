@@ -1,0 +1,75 @@
+---
+---
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="/" aria-label="Arvian beranda">
+      <span class="brand-mark" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></span>
+      <span class="brand-text">Arvian</span>
+    </a>
+    <nav class="nav-desktop" aria-label="Navigasi utama">
+      <a href="/#work">Project</a>
+      <a href="/#stack">Teknologi</a>
+      <a href="/#about">Tentang</a>
+      <a href="/#contact">Kontak</a>
+    </nav>
+    <div class="head-actions">
+      <a class="btn btn-ghost" href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="btn btn-primary" href="mailto:divarvian@gmail.com">Hubungi</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Buka menu">
+        <span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <nav aria-label="Navigasi mobile">
+      <a href="/#work">Project</a>
+      <a href="/#stack">Teknologi</a>
+      <a href="/#about">Tentang</a>
+      <a href="/#contact">Kontak</a>
+    </nav>
+    <div class="mobile-ctas">
+      <a class="btn btn-primary" href="mailto:divarvian@gmail.com">Hubungi</a>
+      <a class="btn btn-ghost" href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</header>
+
+ <style>
+  .site-head{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 94%, white);backdrop-filter:blur(8px) saturate(1.05);border-bottom:1px solid var(--stone)}
+  .head-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:60px}
+  .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;min-height:44px}
+  .brand-mark{width:36px;height:36px;border-radius:9px;background:var(--ink);border:none;color:var(--paper);display:inline-grid;place-items:center;flex:0 0 36px}
+  .brand-mark svg{width:18px;height:18px;display:block}
+  .brand-text{font-family:Newsreader,Georgia,serif;font-size:18px;letter-spacing:-0.025em;color:var(--ink);font-weight:600;line-height:1}
+  .nav-desktop{display:flex;align-items:center;gap:22px}
+  .nav-desktop a{font-size:13.5px;letter-spacing:-0.01em;color:var(--muted);text-decoration:none;padding:8px 2px;border-bottom:2px solid transparent;transition:color .16s,border-color .16s}
+  .nav-desktop a:hover{color:var(--ink);border-color:var(--stone-2)}
+  .nav-desktop a[aria-current]{color:var(--ink);border-color:var(--clay)}
+  .mobile-menu nav a[aria-current]{color:var(--ink);border-color:var(--clay)}
+  .head-actions{display:flex;align-items:center;gap:10px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;font-size:13.5px;font-weight:500;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+  .btn-primary{background:var(--clay);color:white;border-color:var(--clay)}
+  .btn-primary:hover{background:var(--clay-2);border-color:var(--clay-2)}
+  .btn-ghost{background:white;border-color:var(--stone-2);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink-2)}
+  .menu-btn{display:none;align-items:center;justify-content:center;width:44px;min-height:44px;padding:0;border-radius:999px;border:1px solid var(--stone-2);background:white;color:var(--ink)}
+  .menu-btn[aria-expanded="true"]{background:var(--ink);color:white;border-color:var(--ink)}
+  .hamburger{width:18px;height:14px;position:relative;display:inline-block;flex:0 0 18px}
+  .hamburger i{position:absolute;left:0;right:0;height:1.5px;background:currentColor;border-radius:999px;transition:transform .18s,opacity .18s,top .18s}
+  .hamburger i:nth-child(1){top:1px}
+  .hamburger i:nth-child(2){top:6px}
+  .hamburger i:nth-child(3){top:11px}
+  .menu-btn[aria-expanded="true"] .hamburger i:nth-child(1){top:6px;transform:rotate(45deg)}
+  .menu-btn[aria-expanded="true"] .hamburger i:nth-child(2){opacity:0}
+  .menu-btn[aria-expanded="true"] .hamburger i:nth-child(3){top:6px;transform:rotate(-45deg)}
+  .mobile-menu{position:absolute;left:0;right:0;top:100%;background:var(--paper);border-bottom:1px solid var(--stone);box-shadow:0 16px 30px rgba(20,24,30,0.06);padding:16px 24px 20px}
+  .mobile-menu nav{display:grid;gap:2px}
+  .mobile-menu nav a{display:flex;align-items:center;min-height:44px;padding:10px 4px;text-decoration:none;color:var(--ink-2);font-size:15px;border-bottom:1px solid color-mix(in srgb, var(--stone) 85%, white)}
+  .mobile-menu nav a:hover{color:var(--ink)}
+  .mobile-ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  @media (max-width: 720px){
+    .nav-desktop,.head-actions .btn{display:none}
+    .menu-btn{display:inline-flex}
+    .mobile-menu{padding:16px 18px 20px}
+  }
+</style>

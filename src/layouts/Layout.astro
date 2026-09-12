@@ -1,0 +1,108 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+const {
+  title = "Diva Arviansyah - Mobile Engineer | divarvian.my.id",
+  description = "Mobile Engineer, Pendidikan Teknologi Informasi FILKOM Universitas Brawijaya, Raion Community. Kotlin Jetpack Compose dan Flutter, belajar dengan membangun.",
+  canonical = "https://divarvian.my.id/",
+  ogImage = "/favicon.svg",
+} = Astro.props;
+const site = "https://divarvian.my.id";
+const canonicalURL = canonical.startsWith("http") ? canonical : new URL(canonical, site).href;
+const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site).href;
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="divarvian.my.id" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+    <script is:inline>
+      try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+      (function () {
+        function isReload() {
+          try {
+            var n = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+            if (n) return n.type === 'reload';
+          } catch (e) {}
+          try { return sessionStorage.getItem('_reloading') === '1'; } catch (e2) {}
+          return false;
+        }
+        function forceTop() {
+          try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+          try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e2) { window.scrollTo(0, 0); }
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }
+        if (location.hash && isReload()) {
+          forceTop();
+          document.addEventListener('DOMContentLoaded', forceTop);
+          window.addEventListener('load', function () { setTimeout(forceTop, 30); setTimeout(forceTop, 180); });
+          var t = 0;
+          var iv = setInterval(function () { forceTop(); if (++t > 14) clearInterval(iv); }, 60);
+        }
+        window.addEventListener('pageshow', function (e) { if (e.persisted && location.hash) forceTop(); });
+        try {
+          window.addEventListener('beforeunload', function () {
+            try { if (location.hash) sessionStorage.setItem('_reloading', '1'); else sessionStorage.removeItem('_reloading'); } catch (e) {}
+          });
+          window.addEventListener('load', function () {
+            setTimeout(function () { try { sessionStorage.removeItem('_reloading'); } catch (e) {} }, 900);
+          });
+        } catch (e3) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Loncat ke konten</a>
+    <slot />
+    <style is:global>
+      :root{
+        --paper:#FDFCF8;
+        --ink:#14181E;
+        --ink-2:#2B323B;
+        --muted:#5E5C58;
+        --muted-2:#6B6A66;
+        --stone:#E8E4DD;
+        --stone-2:#D9D3C8;
+        --clay:#C2410C;
+        --clay-2:#9A3412;
+        --radius:14px;
+        --radius-sm:10px;
+        --max:1120px;
+        --content:720px;
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+      a{color:inherit}
+      a:focus-visible,button:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+      .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+      .skip:focus{left:16px;top:16px;width:auto;height:auto;background:var(--ink);color:white;padding:10px 14px;border-radius:999px;z-index:99}
+      ::selection{background:var(--stone)}
+      @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto !important;transition:none !important}}
+    </style>
+  </body>
+</html>
