@@ -13,6 +13,10 @@
       <a href="/#contact">Kontak</a>
     </nav>
     <div class="head-actions">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Ganti tema" aria-pressed="false" title="Ganti tema">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <a class="btn btn-ghost" href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer">GitHub</a>
       <a class="btn btn-primary" href="mailto:divarvian@gmail.com">Hubungi</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Buka menu">
@@ -31,6 +35,7 @@
       <a class="btn btn-primary" href="mailto:divarvian@gmail.com">Hubungi</a>
       <a class="btn btn-ghost" href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
+
   </div>
 </header>
 
@@ -46,7 +51,13 @@
   .nav-desktop a:hover{color:var(--ink);border-color:var(--stone-2)}
   .nav-desktop a[aria-current]{color:var(--ink);border-color:var(--clay)}
   .mobile-menu nav a[aria-current]{color:var(--ink);border-color:var(--clay)}
-  .head-actions{display:flex;align-items:center;gap:10px}
+  .head-actions{display:flex;align-items:center;gap:8px}
+  .theme-btn{width:44px;height:44px;min-height:44px;padding:0;border-radius:999px;border:1px solid var(--stone-2);background:white;color:var(--ink);display:inline-grid;place-items:center;cursor:pointer;flex:0 0 44px;transition:background .16s,border-color .16s,color .16s,transform .16s}
+  .theme-btn:hover{border-color:var(--ink-2)}
+  .theme-btn .icon-moon{display:none}
+  :global(html.dark) .theme-btn{background:#1F252E;border-color:#2A3647;color:var(--ink)}
+  :global(html.dark) .theme-btn .icon-sun{display:none}
+  :global(html.dark) .theme-btn .icon-moon{display:block}
   .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;font-size:13.5px;font-weight:500;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
   .btn-primary{background:var(--clay);color:white;border-color:var(--clay)}
   .btn-primary:hover{background:var(--clay-2);border-color:var(--clay-2)}

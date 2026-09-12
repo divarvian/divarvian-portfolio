@@ -253,6 +253,67 @@ main section[id]{scroll-margin-top:68px}
   .mobile-menu{padding:14px 18px 16px}
   .mobile-ctas{gap:8px;margin-top:12px}
 }
+html.dark .win{background:#1B1F2A;border-color:#252F3F}
+html.dark .win-bar{background:#1E2631;border-color:#252F3F}
+html.dark .win-title{color:var(--muted)}
+html.dark .avatar{background:var(--ink);color:var(--paper);border-color:var(--paper);box-shadow:0 0 0 2px #252F3F,0 4px 14px rgba(0,0,0,.35)}
+html.dark .brand-mark{background:var(--ink);color:var(--paper)}
+html.dark .side-note{background:#1E2631;border-color:#252F3F;color:var(--muted)}
+html.dark .project-visual{background:#12151C;border-color:#252F3F}
+html.dark .visual-frame{background:#1B1F2A;border-color:#252F3F}
+html.dark .frame-bar{background:#222A36;border-color:#252F3F}
+html.dark .hero-status{background:#0F2A1E;border-color:#1A4730;color:#6EE7B7}
+html.dark .hero-email{background:#1B1F2A;border-color:#252F3F;color:var(--muted-2)}
+html.dark .copy-btn{background:#1B1F2A;border-color:#252F3F;color:var(--muted)}
+html.dark .copy-btn:hover{border-color:var(--muted-2);color:var(--ink)}
+html.dark .btn-ghost{background:#1B1F2A;border-color:#2A3647;color:var(--ink)}
+html.dark .btn-ghost:hover{border-color:var(--muted-2)}
+html.dark .menu-btn{background:#1B1F2A;border-color:#2A3647;color:var(--ink)}
+html.dark .menu-btn[aria-expanded="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+html.dark .site-head{background:#0F1218;border-color:#252F3F}
+html.dark .mobile-menu{background:#0F1218;border-color:#252F3F}
+html.dark .mobile-menu nav a{color:var(--muted-2);border-color:rgba(255,255,255,.06)}
+html.dark .mobile-menu nav a:hover{color:var(--ink)}
+html.dark .tag{background:#1E2631;border-color:#252F3F;color:var(--muted-2)}
+html.dark .tag.muted{background:transparent;border-color:#252F3F;color:var(--muted)}
+html.dark .pill{background:var(--ink);color:var(--paper)}
+html.dark .pill.muted{background:transparent;border-color:#252F3F;color:var(--muted)}
+html.dark .pill-note{color:var(--muted-2)}
+html.dark .side-list li{border-color:#232E3E}
+html.dark .stack-card li{border-color:#232E3E}
+html.dark .about-card dl div{border-color:#232E3E}
+html.dark .about-card a{color:var(--ink)}
+html.dark .hero-meta{border-color:#252F3F}
+html.dark .hero-meta .meta-item{border-color:#252F3F}
+html.dark .section-head{border-top-color:#2A3647;border-bottom-color:#252F3F}
+html.dark .stack-intro{border-top-color:#2A3647}
+html.dark .site-foot{border-color:#252F3F}
+html.dark .foot-bottom{border-color:#252F3F}
+html.dark .foot-brand{color:var(--ink)}
+html.dark .foot-brand-col,.foot-note,.foot-nav a{color:var(--muted)}
+html.dark .foot-nav-title{color:var(--ink)}
+html.dark .foot-social a{color:var(--muted)}
+html.dark .foot-social a:hover{background:#1F2937;color:var(--ink)}
+html.dark .frame-k,.visual-caption,.card-label{color:var(--muted)}
+html.dark .text-link{border-color:#2A3647;color:var(--ink)}
+html.dark .text-link:hover{border-color:var(--ink)}
+html.dark .activity-card.win{border-color:#252F3F}
+html.dark .activity-total,.activity-state,.activity-error{color:var(--muted)}
+html.dark .activity-total-num{color:var(--ink)}
+html.dark .activity-handle{color:var(--muted-2)}
+html.dark .activity-handle:hover{color:var(--ink)}
+html.dark .activity-graph .cell[data-level="0"]{background:#1F2937;border-color:rgba(255,255,255,.06)}
+html.dark .activity-legend{color:var(--muted-2)}
+html.dark .activity-legend .cell[data-level="0"]{background:#1F2937}
+html.dark .activity-graph .cell[data-level="1"]{background:#1A3A2B}
+html.dark .activity-graph .cell[data-level="2"]{background:#1F5A3A}
+html.dark .activity-graph .cell[data-level="3"]{background:#2A7A4E}
+html.dark .activity-graph .cell[data-level="4"]{background:#3A9A6A}
+html.dark .activity-graph .cell.snake-head{background:var(--ink) !important;border-color:var(--ink) !important}
+html.dark .activity-graph .cell.snake-body{background:#4A5A6E !important;border-color:#4A5A6E !important}
+html.dark .activity-graph .cell.eaten{background:#1F2937 !important;border-color:rgba(255,255,255,.06) !important}
+html.dark .visual-frame .frame-lines span{background:#1F2937}
+html.dark .frame-cards span{background:#12151C;border-color:#252F3F}
 @media (max-width: 380px){
   .wrap{padding-inline:14px}
   .display{font-size:34px}

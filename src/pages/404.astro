@@ -52,6 +52,7 @@ import "../styles/site.css";
   </main>
   <SiteFooter />
   <script>
+    (function(){const K='theme';function apply(d:boolean){document.documentElement.classList.toggle('dark',d);document.documentElement.setAttribute('data-theme',d?'dark':'light');try{localStorage.setItem(K,d?'dark':'light')}catch{}document.querySelectorAll('#themeBtn').forEach(b=>{(b as HTMLButtonElement).setAttribute('aria-pressed',String(d))});}try{const s=localStorage.getItem(K);if(s)apply(s==='dark');else if(window.matchMedia)apply(window.matchMedia('(prefers-color-scheme: dark)').matches);}catch{}document.getElementById('themeBtn')?.addEventListener('click',()=>apply(!document.documentElement.classList.contains('dark')));})();
     const btn = document.getElementById('menuBtn') as HTMLButtonElement | null;
     const menu = document.getElementById('mobileMenu') as HTMLElement | null;
     if (btn && menu) {

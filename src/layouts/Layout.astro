@@ -39,6 +39,10 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      (function(){try{var s=localStorage.getItem('theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var d=s?s==='dark':m;if(d){document.documentElement.classList.add('dark')}document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}})();
+    </script>
     <script is:inline>
       try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
       (function () {
@@ -96,7 +100,17 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
       }
       *{box-sizing:border-box}
       html{scroll-behavior:smooth}
-      html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+      html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;transition:background-color .18s, color .18s}
+      html.dark{
+        --paper:#0F1218;
+        --ink:#ECE9E3;
+        --ink-2:#D8D5D0;
+        --muted:#9AA0A8;
+        --muted-2:#8B949E;
+        --stone:#1F2937;
+        --stone-2:#2A3647;
+      }
+      html.dark body{background:var(--paper);color:var(--ink)}
       a{color:inherit}
       a:focus-visible,button:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
       .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}

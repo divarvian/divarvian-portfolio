@@ -28,6 +28,28 @@ import "../styles/site.css";
     </style>
   </noscript>
   <script>
+    (function(){
+      const KEY='theme';
+      function apply(dark:boolean){
+        document.documentElement.classList.toggle('dark',dark);
+        document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+        try{localStorage.setItem(KEY,dark?'dark':'light')}catch{}
+        document.querySelectorAll('#themeBtn').forEach(b=>{
+          (b as HTMLButtonElement).setAttribute('aria-pressed',String(dark));
+          (b as HTMLButtonElement).setAttribute('aria-label',dark?'Ganti ke terang':'Ganti ke gelap');
+          (b as HTMLButtonElement).title=dark?'Ganti ke terang':'Ganti ke gelap';
+        });
+      }
+      try{
+        const s=localStorage.getItem(KEY);
+        if(s) apply(s==='dark');
+        else if(window.matchMedia) apply(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      }catch{}
+      document.getElementById('themeBtn')?.addEventListener('click',()=>apply(!document.documentElement.classList.contains('dark')));
+      if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',e=>{
+        try{if(!localStorage.getItem(KEY)) apply(e.matches)}catch{}
+      });
+    })();
     const btn = document.getElementById('menuBtn') as HTMLButtonElement | null;
     const menu = document.getElementById('mobileMenu') as HTMLElement | null;
     const copyBtn = document.getElementById('copyEmail') as HTMLButtonElement | null;
