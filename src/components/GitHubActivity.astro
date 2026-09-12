@@ -1,32 +1,36 @@
 ---
+import { ui, type Lang } from "../i18n/ui";
+interface Props { lang?: Lang }
+const lang = Astro.props.lang ?? 'id';
+const t = ui[lang].activity;
 ---
 <section id="activity" class="section wrap reveal" data-delay="1">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Aktivitas</p>
-      <h2>Kontribusi GitHub</h2>
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h2>{t.title}</h2>
     </div>
   </div>
   <div class="activity-card win">
     <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">contributions — arvian@fedora</span><span class="win-spacer"></span></div>
     <div class="win-body">
     <div class="activity-head">
-      <p class="activity-total"><span id="ghTotal" class="activity-total-num">—</span> contributions in the last year</p>
+      <p class="activity-total"><span id="ghTotal" class="activity-total-num">—</span> {t.contributions}</p>
       <a href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer" class="activity-handle">@divarvian</a>
     </div>
-    <div id="ghState" class="activity-state" role="status" aria-live="polite">Memuat kontribusi...</div>
+    <div id="ghState" class="activity-state" role="status" aria-live="polite">{t.loading}</div>
     <div id="ghGraphWrap" class="activity-graph-wrap" tabindex="0" aria-label="GitHub contribution calendar" hidden>
       <div id="ghGraph" class="activity-graph" role="img" aria-label="GitHub contributions in the last year"></div>
     </div>
     <div id="ghError" class="activity-error" hidden>
-      <p>Gagal memuat data GitHub. Coba lagi atau buka profil langsung.</p>
+      <p>{t.errorText}</p>
       <div class="cta-row" style="margin-top:10px">
-        <button type="button" id="ghRetry" class="btn btn-ghost">Coba lagi</button>
-        <a href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Buka GitHub</a>
+        <button type="button" id="ghRetry" class="btn btn-ghost">{t.retry}</button>
+        <a href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer" class="btn btn-primary">{t.openGithub}</a>
       </div>
     </div>
     <div class="activity-foot">
-      <div class="activity-legend" aria-hidden="true"><span>Less</span><span class="cell" data-level="0"></span><span class="cell" data-level="1"></span><span class="cell" data-level="2"></span><span class="cell" data-level="3"></span><span class="cell" data-level="4"></span><span>More</span></div>
+      <div class="activity-legend" aria-hidden="true"><span>{t.less}</span><span class="cell" data-level="0"></span><span class="cell" data-level="1"></span><span class="cell" data-level="2"></span><span class="cell" data-level="3"></span><span class="cell" data-level="4"></span><span>{t.more}</span></div>
     </div>
     </div>
   </div>
@@ -88,7 +92,8 @@
   async function load() {
     if (!totalEl || !stateEl || !wrapEl || !graphEl || !errorEl) return;
     stateEl.hidden = false;
-    stateEl.textContent = 'Memuat kontribusi...';
+    const t = (stateEl.textContent || '').trim() || 'Memuat kontribusi...';
+    stateEl.textContent = t;
     wrapEl.hidden = true;
     errorEl.hidden = true;
     graphEl.innerHTML = '';

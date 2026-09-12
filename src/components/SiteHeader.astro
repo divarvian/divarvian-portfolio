@@ -1,24 +1,33 @@
 ---
+import { ui, type Lang, prefixFor } from "../i18n/ui";
+interface Props { lang?: Lang }
+const lang = Astro.props.lang ?? 'id';
+const t = ui[lang];
+const p = prefixFor(lang);
+const switchHref = lang === 'id' ? '/en/' : '/';
+const switchLabel = t.langLabel;
+const switchAria = t.langAria;
 ---
 <header class="site-head">
   <div class="wrap head-inner">
-    <a class="brand" href="/" aria-label="Arvian beranda">
+    <a class="brand" href={p || '/'} aria-label="Arvian beranda">
       <span class="brand-mark" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></span>
       <span class="brand-text">Arvian</span>
     </a>
     <nav class="nav-desktop" aria-label="Navigasi utama">
-      <a href="/#work">Project</a>
-      <a href="/#stack">Teknologi</a>
-      <a href="/#about">Tentang</a>
-      <a href="/#contact">Kontak</a>
+      <a href={`${p}/#work`}>{t.nav.work}</a>
+      <a href={`${p}/#stack`}>{t.nav.stack}</a>
+      <a href={`${p}/#about`}>{t.nav.about}</a>
+      <a href={`${p}/#contact`}>{t.nav.contact}</a>
     </nav>
     <div class="head-actions">
+      <a class="lang-switch" href={switchHref} aria-label={switchAria}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 0 4 10 15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0-4-10A15.3 15.3 0 0 0 12 2z"/></svg><span>{switchLabel}</span></a>
       <button class="theme-btn" id="themeBtn" type="button" aria-label="Ganti tema" aria-pressed="false" title="Ganti tema">
         <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
       <a class="btn btn-ghost" href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a class="btn btn-primary" href="mailto:divarvian@gmail.com">Hubungi</a>
+      <a class="btn btn-primary" href="mailto:divarvian@gmail.com">{t.nav.contactCta}</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Buka menu">
         <span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
@@ -26,32 +35,36 @@
   </div>
   <div class="mobile-menu" id="mobileMenu" hidden>
     <nav aria-label="Navigasi mobile">
-      <a href="/#work">Project</a>
-      <a href="/#stack">Teknologi</a>
-      <a href="/#about">Tentang</a>
-      <a href="/#contact">Kontak</a>
+      <a href={`${p}/#work`}>{t.nav.work}</a>
+      <a href={`${p}/#stack`}>{t.nav.stack}</a>
+      <a href={`${p}/#about`}>{t.nav.about}</a>
+      <a href={`${p}/#contact`}>{t.nav.contact}</a>
     </nav>
     <div class="mobile-ctas">
-      <a class="btn btn-primary" href="mailto:divarvian@gmail.com">Hubungi</a>
+      <a class="btn btn-primary" href="mailto:divarvian@gmail.com">{t.nav.contactCta}</a>
       <a class="btn btn-ghost" href="https://github.com/divarvian" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
-
+    <a class="lang-switch mobile-lang" href={switchHref} aria-label={switchAria}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 0 4 10 15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0-4-10A15.3 15.3 0 0 0 12 2z"/></svg><span>{switchLabel}</span></a>
   </div>
 </header>
 
- <style>
-  .site-head{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 94%, transparent);backdrop-filter:blur(8px) saturate(1.05);border-bottom:1px solid var(--stone)}
+  <style>
+   .site-head{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 94%, transparent);backdrop-filter:blur(8px) saturate(1.05);border-bottom:1px solid var(--stone)}
   .head-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:60px}
   .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;min-height:44px}
   .brand-mark{width:36px;height:36px;border-radius:9px;background:var(--ink);border:none;color:var(--paper);display:inline-grid;place-items:center;flex:0 0 36px}
   .brand-mark svg{width:18px;height:18px;display:block}
-  .brand-text{font-family:Newsreader,Georgia,serif;font-size:18px;letter-spacing:-0.025em;color:var(--ink);font-weight:600;line-height:1}
+  .brand-text{font-family:"Plus Jakarta Sans",sans-serif;font-size:18px;letter-spacing:-0.025em;color:var(--ink);font-weight:600;line-height:1}
   .nav-desktop{display:flex;align-items:center;gap:22px}
   .nav-desktop a{font-size:13.5px;letter-spacing:-0.01em;color:var(--muted);text-decoration:none;padding:8px 2px;border-bottom:2px solid transparent;transition:color .16s,border-color .16s}
   .nav-desktop a:hover{color:var(--ink);border-color:var(--stone-2)}
   .nav-desktop a[aria-current]{color:var(--ink);border-color:var(--clay)}
   .mobile-menu nav a[aria-current]{color:var(--ink);border-color:var(--clay)}
   .head-actions{display:flex;align-items:center;gap:8px}
+  .lang-switch{display:inline-flex;align-items:center;gap:6px;justify-content:center;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--stone-2);background:white;color:var(--ink);font-family:JetBrains Mono,monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;text-decoration:none;transition:background .16s,border-color .16s,color .16s}
+  .lang-switch:hover{border-color:var(--ink-2)}
+  :global(html.dark) .lang-switch{background:#1B1F2A;border-color:#2A3647;color:var(--ink)}
+  .lang-switch svg{flex:0 0 14px;opacity:0.9}
   .theme-btn{width:44px;height:44px;min-height:44px;padding:0;border-radius:999px;border:1px solid var(--stone-2);background:white;color:var(--ink);display:inline-grid;place-items:center;cursor:pointer;flex:0 0 44px;transition:background .16s,border-color .16s,color .16s,transform .16s}
   .theme-btn:hover{border-color:var(--ink-2)}
   .theme-btn .icon-moon{display:none}
@@ -78,9 +91,12 @@
   .mobile-menu nav a{display:flex;align-items:center;min-height:44px;padding:10px 4px;text-decoration:none;color:var(--ink-2);font-size:15px;border-bottom:1px solid color-mix(in srgb, var(--stone) 85%, white)}
   .mobile-menu nav a:hover{color:var(--ink)}
   .mobile-ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  .mobile-lang{width:100%;margin-top:12px;display:none}
   @media (max-width: 720px){
-    .nav-desktop,.head-actions .btn{display:none}
+    .nav-desktop,.head-actions .btn,.head-actions .lang-switch{display:none}
+    .head-actions .theme-btn{display:inline-grid}
     .menu-btn{display:inline-flex}
     .mobile-menu{padding:16px 18px 20px}
+    .mobile-lang{display:inline-flex}
   }
 </style>

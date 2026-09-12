@@ -1,17 +1,15 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import { ui, getLang } from "../i18n/ui";
-import "../styles/site.css";
-const lang = getLang(Astro.url);
+import Layout from "../../layouts/Layout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { ui } from "../../i18n/ui";
+import "../../styles/site.css";
+const lang = 'en' as const;
 const t = ui[lang].notFound;
-const p = lang === 'en' ? '/en' : '';
-const title = lang === 'en' ? 'Not found - divarvian.my.id' : 'Tidak ditemukan - divarvian.my.id';
-const desc = lang === 'en' ? 'Page not found at divarvian.my.id. Back to home or contact Diva.' : 'Halaman tidak ditemukan di divarvian.my.id. Kembali ke beranda atau hubungi Diva.';
+const p = '/en';
 ---
 
-<Layout lang={lang} title={title} description={desc} canonical={lang === 'en' ? 'https://divarvian.my.id/en/404' : 'https://divarvian.my.id/404'}>
+<Layout lang={lang} title="Not found - divarvian.my.id" description="Page not found at divarvian.my.id. Back to home or contact Diva." canonical="https://divarvian.my.id/en/404">
   <SiteHeader lang={lang} />
   <main id="main" class="notfound">
     <div class="wrap notfound-wrap">

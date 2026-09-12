@@ -4,19 +4,21 @@ interface Props {
   description?: string;
   canonical?: string;
   ogImage?: string;
+  lang?: 'id' | 'en';
 }
 const {
   title = "Diva Arviansyah - Mobile Engineer | divarvian.my.id",
   description = "Mobile Engineer, Pendidikan Teknologi Informasi FILKOM Universitas Brawijaya, Raion Community. Kotlin Jetpack Compose dan Flutter, belajar dengan membangun.",
   canonical = "https://divarvian.my.id/",
   ogImage = "/favicon.svg",
+  lang = 'id' as 'id' | 'en',
 } = Astro.props;
 const site = "https://divarvian.my.id";
 const canonicalURL = canonical.startsWith("http") ? canonical : new URL(canonical, site).href;
 const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site).href;
 ---
 <!doctype html>
-<html lang="id">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,10 +40,33 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <meta name="color-scheme" content="light dark" />
     <script is:inline>
       (function(){try{var s=localStorage.getItem('theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var d=s?s==='dark':m;if(d){document.documentElement.classList.add('dark')}document.documentElement.setAttribute('data-theme',d?'dark':'light')}catch(e){}})();
+    </script>
+    <script is:inline>
+      (function(){
+        try{
+          var LK='lang';
+          var stored=null;try{stored=localStorage.getItem(LK);}catch(e){}
+          if(stored) return;
+          var nav=(navigator.language||'').toLowerCase();
+          var prefersEn=nav.indexOf('en')===0;
+          var path=location.pathname;
+          var isEn=path.indexOf('/en')===0;
+          var isRoot=path==='/'||path==='';
+          if(prefersEn&&isRoot&&!isEn){
+            try{localStorage.setItem(LK,'en');}catch(e){}
+            location.replace('/en/'+location.search+location.hash);
+          }
+        }catch(e){}
+      })();
+      document.addEventListener('click',function(e){
+        var a=e.target&&e.target.closest?e.target.closest('a.lang-switch'):null;
+        if(!a) return;
+        try{var h=a.getAttribute('href')||'';var L=h.indexOf('/en')===0?'en':'id';localStorage.setItem('lang',L);}catch(err){}
+      });
     </script>
     <script is:inline>
       try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
@@ -100,7 +125,7 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
       }
       *{box-sizing:border-box}
       html{scroll-behavior:smooth}
-      html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;transition:background-color .18s, color .18s}
+      html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;transition:background-color .18s, color .18s}
       html.dark{
         --paper:#0F1218;
         --ink:#ECE9E3;

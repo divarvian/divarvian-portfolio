@@ -1,17 +1,21 @@
 ---
+import { ui, type Lang } from "../i18n/ui";
+interface Props { lang?: Lang }
+const lang = Astro.props.lang ?? 'id';
+const t = ui[lang].contact;
 ---
 <section id="contact" class="section wrap contact reveal" data-delay="1">
   <div class="contact-card win win-dark">
     <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">contact — arvian@fedora: ~</span><span class="win-spacer"></span></div>
     <div class="win-body">
     <div>
-      <p class="eyebrow">Available for work</p>
-      <h2>Get In Touch</h2>
-      <p>Punya project di kepala atau cuma mau sapa? Feel free to reach out, aku terbuka untuk magang dan kolaborasi baru.</p>
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h2>{t.title}</h2>
+      <p>{t.desc}</p>
     </div>
     <div class="contact-actions">
       <a class="btn btn-primary" href="mailto:divarvian@gmail.com">divarvian@gmail.com</a>
-      <button class="btn btn-ghost" id="copyEmail" type="button">Salin email</button>
+      <button class="btn btn-ghost" id="copyEmail" type="button">{t.copyEmail}</button>
       <span class="copy-status" id="copyStatus" role="status" aria-live="polite"></span>
     </div>
     <div class="social-row">
