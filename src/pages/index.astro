@@ -84,25 +84,50 @@ import "../styles/site.css";
       });
     }
 
+    async function copyText(text: string): Promise<boolean> {
+      if (navigator.clipboard && (window as any).isSecureContext) {
+        try { await navigator.clipboard.writeText(text); return true; } catch {}
+      }
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '-9999px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        ta.setSelectionRange(0, 99999);
+        const ok = document.execCommand('copy');
+        ta.remove();
+        if (ok) return true;
+      } catch {}
+      return false;
+    }
     if (copyBtn && copyStatus) {
       copyBtn.addEventListener('click', async () => {
-        try { await navigator.clipboard.writeText('divarvian@gmail.com'); copyStatus.textContent = 'Alamat email tersalin'; }
-        catch { copyStatus.textContent = 'Gagal menyalin, silakan salin manual: divarvian@gmail.com'; }
+        const ok = await copyText('divarvian@gmail.com');
+        copyStatus.textContent = ok ? 'Alamat email tersalin' : 'Salin manual: divarvian@gmail.com';
+        if (!ok) { try { window.prompt('Salin alamat email:', 'divarvian@gmail.com'); } catch {} }
         setTimeout(() => copyStatus.textContent = '', 2500);
       });
     }
     document.querySelectorAll('[data-copy-text]').forEach((btn) => {
       if (btn.id === 'copyEmail') return;
-      btn.addEventListener('click', async () => {
+      (btn as HTMLElement).addEventListener('click', async () => {
         const text = (btn as HTMLElement).dataset.copyText || '';
         const copyIcon = btn.querySelector('.copy-icon') as HTMLElement | null;
         const checkIcon = btn.querySelector('.check-icon') as HTMLElement | null;
-        try {
-          await navigator.clipboard.writeText(text);
+        const ok = await copyText(text);
+        if (ok) {
           copyIcon?.classList.add('hidden');
           checkIcon?.classList.remove('hidden');
           setTimeout(() => { copyIcon?.classList.remove('hidden'); checkIcon?.classList.add('hidden'); }, 1600);
-        } catch {}
+        } else {
+          try { window.prompt('Salin:', text); } catch {}
+        }
       });
     });
 
