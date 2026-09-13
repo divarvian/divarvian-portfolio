@@ -140,6 +140,15 @@ const canonical = lang === 'en' ? 'https://divarvian.my.id/en/' : 'https://divar
       });
     });
 
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const _t=document.querySelector('.hero-typing');
+      if(_t && !_t.hasAttribute('data-typing-done')){
+        const _full=_t.getAttribute('data-typing')||_t.textContent||'';
+        _t.textContent=''; const _c=document.createElement('span');_c.className='caret';_c.setAttribute('aria-hidden','true');
+        const _tx=document.createTextNode(''); _t.appendChild(_tx); _t.appendChild(_c);
+        let _i=0;(function _type(){ if(_i<=_full.length){ _tx.textContent=_full.slice(0,_i); _i++; setTimeout(_type,55);} else { _t.textContent=_full; _t.setAttribute('data-typing-done',''); }})();
+      }
+    }
     const reveals = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {

@@ -21,13 +21,14 @@ const desc = t.desc;
       </div>
       <p class="section-desc">{t.desc}</p>
     </div>
-    <div class="win win-dark fastfetch-win">
-      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">fastfetch — arvian@Fedora</span><span class="win-spacer"></span></div>
-      <div class="win-body">
-        <p class="ff-cmd"><span class="ff-prompt">arvian@Fedora</span><span class="ff-sep">:</span><span class="ff-path">~</span><span class="ff-dollar">$</span> fastfetch</p>
-        <div class="ff-grid">
-          <div class="ff-art" aria-hidden="true">
-            <pre class="ff-logo"><span class="ff-blue">             .',;::::;,'.</span>
+    <div class="win win-dark fastfetch-win" id="termWin">
+      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">terminal — arvian@fedora</span><span class="win-spacer"></span></div>
+      <div class="win-body" id="termWinBody">
+        <div id="fastfetchBlock">
+          <p class="ff-cmd"><span class="ff-prompt">arvian@Fedora</span><span class="ff-sep">:</span><span class="ff-path">~</span><span class="ff-dollar">$</span> fastfetch</p>
+          <div class="ff-grid">
+            <div class="ff-art" aria-hidden="true">
+              <pre class="ff-logo"><span class="ff-blue">             .',;::::;,'.</span>
 <span class="ff-blue">         .';:cccccccccccc:;,.</span>
 <span class="ff-blue">      .;cccccccccccccccccccccc;.</span>
 <span class="ff-blue">    .:cccccccccccccccccccccccccc:.</span>
@@ -46,34 +47,38 @@ const desc = t.desc;
 <span class="ff-blue">ccccccccccccccccccccccccccccc:'.</span>
 <span class="ff-blue">:ccccccccccccccccccccccc:;,..</span>
 <span class="ff-blue"> ':cccccccccccccccc::;,.</span></pre>
-            <div class="ff-palette"><span style="background:#51A2FF"></span><span style="background:#E8A0A0"></span><span style="background:#E9D48A"></span><span style="background:#9BCFB0"></span><span style="background:#8BC4A8"></span><span style="background:#C4B5FD"></span></div>
-          </div>
-          <div class="ff-info">
-            <p class="ff-head"><span>arvian</span>@<span>Fedora</span></p>
-            <p class="ff-sep-line">-------------</p>
-            <dl>
-              <div><dt>OS</dt><dd>Fedora Linux 44 (Workstation Edition)</dd></div>
-              <div><dt>Host</dt><dd>Strix 15 GL503GE</dd></div>
-              <div><dt>Kernel</dt><dd>7.1.13-200.fc44.x86_64</dd></div>
-              <div><dt>Shell</dt><dd>bash 5.3.9</dd></div>
-              <div><dt>DE</dt><dd>GNOME 50.4 · Wayland</dd></div>
-              <div><dt>Terminal</dt><dd>Ptyxis 50.1</dd></div>
-              <div><dt>Browser</dt><dd>Firefox</dd></div>
-              <div><dt>Editor</dt><dd>VS Code · Adwaita Mono</dd></div>
-              <div><dt>CPU</dt><dd>Intel i7-8750H · 12 threads</dd></div>
-              <div><dt>GPU</dt><dd>NVIDIA GTX 1050 Ti · Intel UHD 630</dd></div>
-              <div><dt>Memory</dt><dd>16 GiB · btrfs · 120 Hz</dd></div>
-              <div><dt>Mobile Dev</dt><dd>{t.mobileItems.map((x) => x.l).join(', ')}</dd></div>
-              <div><dt>Backend & Tools</dt><dd>{t.backendItems.map((x) => x.l).join(', ')}</dd></div>
-            </dl>
+              <div class="ff-palette"><span style="background:#51A2FF"></span><span style="background:#E8A0A0"></span><span style="background:#E9D48A"></span><span style="background:#9BCFB0"></span><span style="background:#8BC4A8"></span><span style="background:#C4B5FD"></span></div>
+            </div>
+            <div class="ff-info">
+              <p class="ff-head"><span>arvian</span>@<span>Fedora</span></p>
+              <p class="ff-sep-line">-------------</p>
+              <dl>
+                <div><dt>OS</dt><dd>Fedora Linux 44 (Workstation Edition)</dd></div>
+                <div><dt>Host</dt><dd>Strix 15 GL503GE</dd></div>
+                <div><dt>Kernel</dt><dd>7.1.13-200.fc44.x86_64</dd></div>
+                <div><dt>Shell</dt><dd>bash 5.3.9</dd></div>
+                <div><dt>DE</dt><dd>GNOME 50.4 · Wayland</dd></div>
+                <div><dt>Terminal</dt><dd>Ptyxis 50.1</dd></div>
+                <div><dt>Browser</dt><dd>Firefox</dd></div>
+                <div><dt>Editor</dt><dd>VS Code · Adwaita Mono</dd></div>
+                <div><dt>CPU</dt><dd>Intel i7-8750H · 12 threads</dd></div>
+                <div><dt>GPU</dt><dd>NVIDIA GTX 1050 Ti · Intel UHD 630</dd></div>
+                <div><dt>Memory</dt><dd>16 GiB · btrfs · 120 Hz</dd></div>
+                <div><dt>Mobile Dev</dt><dd>{t.mobileItems.map((x) => x.l).join(', ')}</dd></div>
+                <div><dt>Backend & Tools</dt><dd>{t.backendItems.map((x) => x.l).join(', ')}</dd></div>
+              </dl>
+            </div>
           </div>
         </div>
+        <div id="termHistory"></div>
+        <p class="ff-cmd term-prompt-row" style="margin-top:12px"><span class="ff-prompt">arvian@Fedora</span><span class="ff-sep">:</span><span class="ff-path">~</span><span class="ff-dollar">$</span> <span class="term-input-wrap"><input type="text" class="terminal-input" id="termInput" placeholder={lang==='en'?"try 'help'":"coba 'help'"} autocomplete="off" spellcheck="false" /><span id="termGhost" class="term-ghost" aria-hidden="true"></span></span></p>
       </div>
     </div>
   </main>
   <SiteFooter lang={lang} />
   <script>
     (function(){const K='theme';function apply(d){document.documentElement.classList.toggle('dark',d);document.documentElement.setAttribute('data-theme',d?'dark':'light');try{localStorage.setItem(K,d?'dark':'light')}catch{}document.querySelectorAll('#themeBtn').forEach(b=>{b.setAttribute('aria-pressed',String(d))});}try{const s=localStorage.getItem(K);if(s)apply(s==='dark');else if(window.matchMedia)apply(window.matchMedia('(prefers-color-scheme: dark)').matches);}catch{}document.getElementById('themeBtn')?.addEventListener('click',()=>apply(!document.documentElement.classList.contains('dark')));})();
+    const isEn = location.pathname.indexOf('/en')===0;
     const btn = document.getElementById('menuBtn');
     const menu = document.getElementById('mobileMenu');
     if (btn && menu) {
@@ -105,7 +110,7 @@ const desc = t.desc;
       });
     }
   </script>
-  <style>
+  <style is:global>
     .fastfetch-win{margin-bottom:14px}
     .ff-cmd{margin:0;font-family:JetBrains Mono,monospace;font-size:11px;color:rgba(255,255,255,.92);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
     .ff-prompt{color:#8BC4A8;font-weight:600}
@@ -130,7 +135,32 @@ const desc = t.desc;
     .ff-next-prompt{margin:12px 0 0;font-family:JetBrains Mono,monospace;font-size:11px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
     .ff-cursor{animation:blink 1s step-end infinite}
     @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+    #termWinBody{max-height:min(64vh,560px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#2A323E transparent}
+    #termHistory:empty{display:none}
+    .term-entry{margin-top:10px}
+    .term-entry:first-child{margin-top:12px}
     .uses-detail{margin-top:2px}
+    .terminal-interactive{margin-top:20px}
+    .term-prompt-row{position:relative}
+    .term-input-wrap{position:relative;flex:1 1 0;min-width:120px;display:inline-flex;align-items:center}
+    .terminal-input{position:relative;z-index:1;flex:1 1 0;min-width:0;width:100%;background:transparent;border:none;color:white;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.6;outline:none;padding:0}
+    .terminal-input::placeholder{color:rgba(255,255,255,.35)}
+    .term-ghost{position:absolute;left:0;top:0;pointer-events:none;white-space:pre;color:transparent;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.6;user-select:none}
+    .term-ghost i{color:rgba(255,255,255,.28);font-style:normal}
+    .term-hint{margin-top:6px;font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.42)}
+    .terminal-output{font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.6;color:rgba(255,255,255,.88)}
+    .terminal-output pre{margin:0;font-family:inherit;font-size:inherit;line-height:inherit;white-space:pre-wrap;word-break:break-word}
+    .terminal-line{margin:6px 0 0;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.6;color:rgba(255,255,255,.88);white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+    .terminal-line.is-error{color:#E8A0A0}
+    .term-echo{display:flex;flex-wrap:nowrap;gap:6px;align-items:center;margin:10px 0 0;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.6;color:rgba(255,255,255,.92)}
+    .term-echo span:last-child{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+    .help-title{margin:8px 0 4px;font-weight:600;color:rgba(255,255,255,.92);font-family:"JetBrains Mono",monospace;font-size:11px}
+    .help-row{display:flex;gap:16px;margin:2px 0 0;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.6}
+    .help-cmd{color:#9BCFB0;min-width:110px;flex:0 0 auto}
+    .help-desc{color:rgba(255,255,255,.78)}
+    .help-block{margin-top:6px}
+    .ls-output{letter-spacing:0.02em}
+    .cat-output{margin-top:6px;color:rgba(255,255,255,.82)}
     @media (max-width: 860px){
       .ff-grid{grid-template-columns:1fr;gap:14px}
       .ff-logo{font-size:8.5px}
@@ -150,6 +180,178 @@ const desc = t.desc;
       .ff-head{font-size:10px}
       .ff-info dd{font-size:10px}
       .ff-logo{font-size:7px}
+      .terminal-interactive .win-body{padding:14px}
     }
   </style>
+  <script define:vars={{ mobile: t.mobileItems.map((x)=>x.l).join(', '), backend: t.backendItems.map((x)=>x.l).join(', ') }}>
+    const mobileStr = mobile;
+    const backendStr = backend;
+    (function(){
+      const input = document.getElementById('termInput');
+      const historyEl = document.getElementById('termHistory');
+      const fastfetchBlock = document.getElementById('fastfetchBlock');
+      const winBody = document.getElementById('termWinBody');
+      if(!input || !historyEl || !fastfetchBlock || !winBody) return;
+      winBody.addEventListener('click', ()=> input.focus());
+      const specText = 'OS: Fedora Linux 44  Host: Strix 15 GL503GE  Kernel: 7.1.13-200.fc44.x86_64\nShell: bash 5.3.9  DE: GNOME 50.4 · Wayland  Terminal: Ptyxis 50.1  Browser: Firefox  Editor: VS Code · Adwaita Mono\nCPU: Intel i7-8750H · 12 threads  GPU: NVIDIA GTX 1050 Ti · Intel UHD 630  Memory: 16 GiB · btrfs · 120 Hz';
+      const allCommands = ['help','ls','cat','clear','fastfetch','neofetch','whoami','pwd','echo','date','uname','history','projects','stack','open','github'];
+      const ghostEl = document.getElementById('termGhost');
+      const cmdHistory = [];
+      const helpId = { title:'Perintah tersedia:', rows:[['help','tampilkan bantuan'],['ls','daftar file'],['cat <file>','tampilkan isi file'],['fastfetch','tampilkan info sistem'],['whoami','tampilkan user'],['pwd','tampilkan direktori'],['echo <teks>','cetak teks'],['date','tampilkan waktu'],['uname -a','info kernel'],['history','riwayat perintah'],['projects','daftar proyek'],['stack','daftar teknologi'],['open <target>','buka link (github/mail)'],['clear','bersihkan terminal']], filesTitle:'File:', files:['mobile-dev.txt','backend-tools.txt','hardware-specs.txt'] };
+      const helpEn = { title:'Available commands:', rows:[['help','show this help'],['ls','list files'],['cat <file>','show file contents'],['fastfetch','show system info'],['whoami','show user'],['pwd','show directory'],['echo <text>','print text'],['date','show time'],['uname -a','kernel info'],['history','command history'],['projects','list projects'],['stack','list tech'],['open <target>','open link (github/mail)'],['clear','clear terminal']], filesTitle:'Files:', files:['mobile-dev.txt','backend-tools.txt','hardware-specs.txt'] };
+      const files = { 'mobile-dev.txt': mobileStr, 'backend-tools.txt': backendStr, 'hardware-specs.txt': specText };
+      const ffGridOrig = fastfetchBlock.querySelector('.ff-grid');
+      function scrollToBottom(){ winBody.scrollTop = winBody.scrollHeight; }
+      function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+      function newEntry(cmd){
+        const entry = document.createElement('div');
+        entry.className = 'term-entry';
+        const echo = document.createElement('p');
+        echo.className = 'ff-cmd';
+        echo.innerHTML = '<span class="ff-prompt">arvian@Fedora</span><span class="ff-sep">:</span><span class="ff-path">~</span><span class="ff-dollar">$</span> ' + esc(cmd);
+        entry.appendChild(echo);
+        historyEl.appendChild(entry);
+        return entry;
+      }
+      function appendLineTo(entry, text, cls){
+        const p = document.createElement('div');
+        p.className = 'terminal-line' + (cls ? ' ' + cls : '');
+        p.textContent = text;
+        entry.appendChild(p);
+      }
+      function appendFastfetchTo(entry){
+        if(!ffGridOrig) return;
+        entry.appendChild(ffGridOrig.cloneNode(true));
+      }
+      function getSuggestion(val){
+        const raw = val.trimStart();
+        if(!raw) return '';
+        const parts = raw.split(/\s+/);
+        if(parts.length === 1){
+          const q = parts[0].toLowerCase();
+          const hit = allCommands.find(c=> c.startsWith(q) && c !== q.toLowerCase());
+          if(hit) return hit.slice(q.length);
+          if(q.length >= 1){
+            const f = Object.keys(files).find(k=> k.toLowerCase().startsWith(q));
+            if(f) return f.slice(q.length);
+          }
+          return '';
+        }
+        if(parts[0].toLowerCase() === 'cat' && parts.length === 2){
+          const q = parts[1].toLowerCase();
+          const hit = Object.keys(files).find(k=> k.toLowerCase().startsWith(q) && k.toLowerCase() !== q);
+          if(hit) return hit.slice(q.length);
+        }
+        if(parts[0].toLowerCase() === 'open' && parts.length === 2){
+          const q = parts[1].toLowerCase();
+          const hit = ['github','mail'].find(k=> k.startsWith(q) && k !== q);
+          if(hit) return hit.slice(q.length);
+        }
+        return '';
+      }
+      function updateGhost(){
+        if(!ghostEl) return;
+        const v = input.value;
+        const sug = getSuggestion(v);
+        if(!sug){ ghostEl.textContent=''; ghostEl.innerHTML=''; return; }
+        ghostEl.innerHTML = '<span style="color:transparent">' + esc(v) + '</span><i>' + esc(sug) + '</i>';
+      }
+      let histIdx = -1;
+      function runBuiltins(entry, cmd, raw, parts, isEn){
+        const lower = cmd;
+        if(lower==='whoami'){ appendLineTo(entry,'arvian'); return true; }
+        if(lower==='pwd'){ appendLineTo(entry,'/home/arvian'); return true; }
+        if(lower==='echo'){ appendLineTo(entry, raw.slice(5).trimStart()); return true; }
+        if(lower==='date'){ appendLineTo(entry, new Date().toString()); return true; }
+        if(lower==='uname'){ appendLineTo(entry,'Linux fedora 7.1.13-200.fc44.x86_64 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux'); return true; }
+        if(lower==='history'){
+          if(cmdHistory.length===0) appendLineTo(entry, isEn?'(no history yet)':'(belum ada riwayat)');
+          else cmdHistory.forEach((h,i)=> appendLineTo(entry, `  ${String(i+1).padStart(2,' ')}  ${h}`));
+          return true;
+        }
+        if(lower==='projects'){ appendLineTo(entry,'BinGo — Kotlin, Jetpack Compose (Raion Intern)'); appendLineTo(entry,'Kawal.Z — Flutter (Raion Hackjam, 1 minggu)'); return true; }
+        if(lower==='stack'){ appendLineTo(entry,'Mobile: Kotlin Jetpack Compose · Flutter Dart · Java · C++'); appendLineTo(entry,'Backend & OS: Supabase · Git · Fedora Linux'); return true; }
+        if(lower==='open'){
+          const t=(parts[1]||'').toLowerCase();
+          if(!t){ appendLineTo(entry, isEn?'usage: open <github|mail>':'pakai: open <github|mail>','is-error'); return true; }
+          if(t==='github'){ appendLineTo(entry,'https://github.com/divarvian'); window.open('https://github.com/divarvian','_blank'); return true; }
+          if(t==='mail' || t==='email'){ appendLineTo(entry,'mailto:divarvian@gmail.com'); window.open('mailto:divarvian@gmail.com','_blank'); return true; }
+          appendLineTo(entry, `open: ${t}: Unknown target`,'is-error'); return true;
+        }
+        if(lower==='github'){ appendLineTo(entry,'https://github.com/divarvian'); window.open('https://github.com/divarvian','_blank'); return true; }
+        return false;
+      }
+      input.addEventListener('input', updateGhost);
+      input.addEventListener('keydown', (e)=>{
+        if((e.key === 'Tab' || (e.key === 'ArrowRight' && (e.ctrlKey || e.metaKey))) && getSuggestion(input.value)){
+          e.preventDefault();
+          input.value += getSuggestion(input.value);
+          updateGhost();
+          return;
+        }
+        if(e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey && input.selectionStart === input.value.length){
+          const sug = getSuggestion(input.value);
+          if(sug){ e.preventDefault(); input.value += sug; updateGhost(); return; }
+        }
+        if(e.key === 'ArrowUp' || e.key === 'ArrowDown'){
+          if(cmdHistory.length===0) return;
+          e.preventDefault();
+          if(e.key === 'ArrowUp'){ histIdx = Math.max(0, histIdx-1); input.value = cmdHistory[histIdx] ?? ''; }
+          else { histIdx = Math.min(cmdHistory.length, histIdx+1); input.value = histIdx===cmdHistory.length ? '' : (cmdHistory[histIdx] ?? ''); }
+          requestAnimationFrame(()=>{ try{ input.setSelectionRange(input.value.length, input.value.length);}catch{} updateGhost(); });
+          return;
+        }
+        if(e.key !== 'Enter') return;
+        const raw = input.value.trim();
+        if(!raw) return;
+        const entry = newEntry(raw);
+        cmdHistory.push(raw); histIdx = cmdHistory.length;
+        const parts = raw.split(/\s+/);
+        const cmd = parts[0].toLowerCase();
+        const isEn = location.pathname.indexOf('/en')===0;
+        if(cmd === 'clear'){ historyEl.innerHTML=''; fastfetchBlock.style.display='none'; input.value=''; updateGhost(); return; }
+        if(cmd === 'fastfetch' || cmd === 'neofetch'){ appendFastfetchTo(entry); input.value=''; updateGhost(); scrollToBottom(); return; }
+        if(cmd === 'ls'){ appendLineTo(entry, 'mobile-dev.txt  backend-tools.txt  hardware-specs.txt', 'ls-output'); input.value=''; updateGhost(); scrollToBottom(); return; }
+        if(runBuiltins(entry, cmd, raw, parts, isEn)){ input.value=''; updateGhost(); scrollToBottom(); return; }
+        if(cmd === 'help' || cmd === '--help' || cmd === '-h'){
+          const h = isEn ? helpEn : helpId;
+          const block = document.createElement('div');
+          block.className = 'help-block';
+          const title = document.createElement('div');
+          title.className = 'help-title terminal-line';
+          title.textContent = h.title;
+          block.appendChild(title);
+          h.rows.forEach(([c,d])=>{
+            const row=document.createElement('div');
+            row.className='help-row';
+            const a=document.createElement('span');a.className='help-cmd';a.textContent=c;
+            const b=document.createElement('span');b.className='help-desc';b.textContent=d;
+            row.appendChild(a);row.appendChild(b);
+            block.appendChild(row);
+          });
+          const filesTitle = document.createElement('div');
+          filesTitle.className = 'help-title terminal-line';
+          filesTitle.style.marginTop = '8px';
+          filesTitle.textContent = h.filesTitle;
+          block.appendChild(filesTitle);
+          h.files.forEach(f=>{
+            const l=document.createElement('div');
+            l.className='terminal-line';
+            l.textContent='  '+f;
+            block.appendChild(l);
+          });
+          entry.appendChild(block);
+          input.value=''; updateGhost(); scrollToBottom(); return;
+        }
+        if(cmd === 'cat'){
+          const target = (parts[1]||'').replace(/["']/g,'');
+          if(!target){ appendLineTo(entry, isEn?'usage: cat <file>':'pakai: cat <file>','is-error'); input.value=''; updateGhost(); scrollToBottom(); return; }
+          if(files[target]){ appendLineTo(entry, files[target], 'cat-output'); input.value=''; updateGhost(); scrollToBottom(); return; }
+          appendLineTo(entry, (isEn?`cat: ${target}: No such file`:`cat: ${target}: file tidak ada`),'is-error'); input.value=''; updateGhost(); scrollToBottom(); return;
+        }
+        appendLineTo(entry, 'bash: ' + cmd + ': command not found','is-error');
+        input.value=''; updateGhost(); scrollToBottom();
+      });
+    })();
+  </script>
 </Layout>

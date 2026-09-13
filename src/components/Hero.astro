@@ -11,24 +11,11 @@ const t = ui[lang].hero;
         <div class="avatar" aria-hidden="true"><span>DA</span></div>
         <div class="hero-name">
           <h1 class="display">Diva Arviansyah</h1>
-          <p class="hero-role">{t.role}</p>
+          <p class="hero-role"><span class="hero-typing" data-typing={t.role} aria-label={t.role}>{t.role}<span class="caret" aria-hidden="true"></span></span></p>
         </div>
       </div>
       <p class="eyebrow hero-sub">{t.sub}</p>
       <p class="lead">{t.lead}</p>
-      <div class="hero-badges">
-        <div class="hero-status" role="status" aria-live="polite">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span>{t.openBadge}</span>
-        </div>
-        <div class="hero-email">
-          <span class="hero-email-text">divarvian@gmail.com</span>
-          <button type="button" class="copy-btn" data-copy-text="divarvian@gmail.com" aria-label={t.copyEmail} title={t.copyEmail}>
-            <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
-            <svg class="check-icon hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-          </button>
-        </div>
-      </div>
       <div class="cta-row">
         <a class="btn btn-primary" href="#contact">{t.sayHi}</a>
         <a class="btn btn-ghost" href="#work">{t.viewWork}</a>

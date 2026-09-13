@@ -133,6 +133,21 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
     <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
     <div class="mouse-dot" id="mouseDot" aria-hidden="true"></div>
     <slot />
+    <div id="cmdPalette" hidden role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="cmd-backdrop" data-cmd-close></div>
+      <div class="cmd-panel" role="document">
+        <div class="cmd-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="cmdInput" type="text" autocomplete="off" spellcheck="false" placeholder="Ketik untuk cari…" aria-label="Cari" />
+          <kbd class="cmd-esc">ESC</kbd>
+        </div>
+        <div class="cmd-list-wrap">
+          <ul id="cmdList" role="listbox" aria-label="Hasil"></ul>
+          <p id="cmdEmpty" class="cmd-empty" hidden>Tidak ada hasil</p>
+        </div>
+        <div class="cmd-foot"><span>↑↓ Navigasi</span><span>↵ Pilih</span><span>ESC Tutup</span><span class="cmd-foot-hint"><kbd>⌘</kbd><kbd>K</kbd> / <kbd>/</kbd></span></div>
+      </div>
+    </div>
     <script is:inline>
       (function(){
         try{
@@ -180,6 +195,113 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
           }catch(e){}
         })();
     </script>
+    <script is:inline>
+      (function(){
+        var palette=document.getElementById('cmdPalette');
+        var input=document.getElementById('cmdInput');
+        var list=document.getElementById('cmdList');
+        var empty=document.getElementById('cmdEmpty');
+        if(!palette||!input||!list) return;
+        var isEn=location.pathname.indexOf('/en')===0;
+        var p=isEn?'/en':'';
+        var _cp=location.pathname;var _cs=location.search;var _ch=location.hash;
+        var switchHref=isEn?(_cp.replace(/^\/en(?=\/|$)/,'')||'/')+_cs+_ch:(_cp==='/'?'/en/':'/en'+_cp)+_cs+_ch;
+        input.placeholder=isEn?'Search projects, pages…':'Cari project, halaman…';
+        var selected=0;
+        var filtered=[];
+        var items=[
+          {title:isEn?'Go to Work':'Buka Project',meta:'#work',href:p+'/#work',kw:'work project portfolio bingo kawal',icon:'▦'},
+          {title:isEn?'Go to Stack':'Buka Teknologi',meta:'#stack',href:p+'/#stack',kw:'stack tech teknologi kotlin flutter java supabase fedora',icon:'◇'},
+          {title:isEn?'Go to About':'Buka Tentang',meta:'#about',href:p+'/#about',kw:'about tentang raion community',icon:'○'},
+          {title:isEn?'Go to Contact':'Buka Kontak',meta:'#contact',href:p+'/#contact',kw:'contact kontak email hubungi',icon:'✉'},
+          {title:isEn?'Open Setup':'Buka Setup',meta:'/uses',href:p+'/uses',kw:'uses setup terminal fastfetch fedora tools',icon:'⬢'},
+          {title:'BinGo — Raion Intern',meta:'GitHub · Kotlin Compose',href:'https://github.com/divarvian/BinGo-Raion-Internship',kw:'bingo kotlin jetpack compose intern raion',icon:'◆',ext:1},
+          {title:'Kawal.Z — Hackjam',meta:'GitHub · Flutter',href:'https://github.com/divarvian/raion-hackjam-13',kw:'kawal.z kawal flutter hackjam',icon:'◆',ext:1},
+          {title:isEn?'Kawal.Z Demo':'Demo Kawal.Z',meta:'Instagram',href:'https://www.instagram.com/p/Dc22DFCoKP4/?img_index=2',kw:'demo kawal instagram',icon:'▶',ext:1},
+          {title:'GitHub',meta:'github.com/divarvian',href:'https://github.com/divarvian',kw:'github divarvian code',icon:'◈',ext:1},
+          {title:isEn?'Send email':'Kirim email',meta:'divarvian@gmail.com',href:'mailto:divarvian@gmail.com',kw:'email mail divarvian gmail',icon:'✉'},
+          {title:isEn?'Copy email':'Salin email',meta:'divarvian@gmail.com',action:'copy',kw:'copy salin email',icon:'⎘'},
+          {title:isEn?'Switch to Indonesian':'Ganti ke Inggris',meta:isEn?'ID':'EN',href:switchHref,kw:'bahasa language indonesian english ganti switch en id',icon:'◎'},
+          {title:isEn?'Toggle theme':'Ganti tema',meta:isEn?'light / dark':'terang / gelap',action:'theme',kw:'theme tema dark light gelap terang',icon:'◐'}
+        ];
+        function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+        function render(q){
+          var qq=(q||'').toLowerCase().trim();
+          filtered=qq?items.filter(function(it){return (it.title+' '+it.meta+' '+it.kw).toLowerCase().indexOf(qq)!==-1;}):items.slice();
+          selected=Math.min(selected,Math.max(0,filtered.length-1));
+          if(selected<0) selected=0;
+          list.innerHTML=filtered.map(function(it,i){
+            var sel=i===selected?'true':'false';
+            var kbd=it.ext?'↗':(it.href&&it.href.indexOf('#')!==-1?'↵':'↵');
+            return '<li><button class="cmd-item" role="option" tabindex="-1" data-i="'+i+'" aria-selected="'+sel+'" data-href="'+esc(it.href||'')+'" data-action="'+esc(it.action||'')+'" data-ext="'+(it.ext?1:0)+'"><span class="cmd-item-left"><span class="cmd-icon" aria-hidden="true">'+esc(it.icon)+'</span><span class="cmd-title">'+esc(it.title)+'</span></span><span style="display:flex;gap:8px;align-items:center"><span class="cmd-meta">'+esc(it.meta)+'</span><span class="cmd-kbd">'+kbd+'</span></span></button></li>';
+          }).join('');
+          if(empty) empty.hidden=filtered.length!==0;
+          list.querySelectorAll('.cmd-item').forEach(function(btn){
+            btn.addEventListener('click',function(){ activate(filtered[parseInt(btn.getAttribute('data-i'),10)]); });
+            btn.addEventListener('mousemove',function(){ var idx=parseInt(btn.getAttribute('data-i'),10); if(idx!==selected){ selected=idx; syncSel(); } });
+          });
+          syncSel();
+        }
+        function syncSel(){
+          list.querySelectorAll('.cmd-item').forEach(function(b,i){ b.setAttribute('aria-selected', i===selected?'true':'false'); });
+          var el=list.querySelector('[aria-selected="true"]');
+          if(el) el.scrollIntoView({block:'nearest'});
+        }
+        function isInput(el){ if(!el) return false; var t=el.tagName; return t==='INPUT'||t==='TEXTAREA'||el.isContentEditable; }
+        function open(q){
+          palette.removeAttribute('hidden');
+          document.body.style.overflow='hidden';
+          selected=0;
+          input.value=q||'';
+          render(input.value);
+          setTimeout(function(){ input.focus(); input.select(); },10);
+        }
+        function close(){
+          palette.setAttribute('hidden','');
+          document.body.style.overflow='';
+          input.blur();
+        }
+        function activate(it){
+          if(!it) return;
+          if(it.href && it.href.indexOf('/en')===0){ try{ localStorage.setItem('lang', it.href.indexOf('/en')===0 ? 'en' : 'id'); }catch(e){} }
+          else if(!isEn && it.href && it.href.indexOf('/')===0){ try{ localStorage.setItem('lang','id'); }catch(e){} }
+          close();
+          if(it.action==='copy'){
+            var txt='divarvian@gmail.com';
+            if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(txt).catch(function(){}); }
+            else{ try{ var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove(); }catch(e){} }
+            if(window.toast) window.toast(isEn?'Email copied':'Email disalin');
+            return;
+          }
+          if(it.action==='theme'){
+            var b=document.getElementById('themeBtn'); if(b) b.click(); return;
+          }
+          if(it.href){
+            if(it.ext) window.open(it.href,'_blank','noopener');
+            else location.href=it.href;
+          }
+        }
+        input.addEventListener('input',function(){ selected=0; render(input.value); });
+        input.addEventListener('keydown',function(e){
+          if(e.key==='ArrowDown'){ e.preventDefault(); selected=Math.min(filtered.length-1,selected+1); syncSel(); }
+          else if(e.key==='ArrowUp'){ e.preventDefault(); selected=Math.max(0,selected-1); syncSel(); }
+          else if(e.key==='Enter'){ e.preventDefault(); activate(filtered[selected]); }
+          else if(e.key==='Escape'){ e.preventDefault(); close(); }
+        });
+        document.addEventListener('keydown',function(e){
+          var palOpen=!palette.hasAttribute('hidden');
+          if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); if(palOpen) close(); else open(''); return; }
+          if(e.key==='Escape'&&palOpen){ e.preventDefault(); close(); return; }
+          if(!palOpen&&e.key==='/'&&!isInput(document.activeElement)&&!e.metaKey&&!e.ctrlKey&&!e.altKey){
+            e.preventDefault(); open(''); return;
+          }
+          if(!palOpen&&e.key==='/'){ return; }
+        });
+        palette.querySelectorAll('[data-cmd-close]').forEach(function(el){ el.addEventListener('click',close); });
+        palette.addEventListener('click',function(e){ if(e.target===palette) close(); });
+        render('');
+      })();
+    </script>
     <style is:global>
       :root{
         --paper:#FDFCF8;
@@ -198,6 +320,7 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
       }
       *{box-sizing:border-box}
       html{scroll-behavior:smooth}
+
       html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;transition:background-color .18s, color .18s}
       html.dark{
         --paper:#0F1218;
@@ -224,6 +347,39 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
       .back-to-top:hover{background:var(--clay);border-color:var(--clay)}
       .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:var(--paper);border:1px solid var(--stone-2);padding:14px 20px;border-radius:999px;font-size:13px;z-index:100;box-shadow:0 8px 24px rgba(20,24,30,.25);transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:0;pointer-events:none;white-space:nowrap}
       .toast:not([hidden]){opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+      #cmdPalette{position:fixed;inset:0;z-index:90;display:grid;place-items:start center;padding:8vh 16px 16px}
+      #cmdPalette[hidden]{display:none !important}
+      .cmd-backdrop{position:absolute;inset:0;background:rgba(10,14,22,.45);backdrop-filter:blur(8px) saturate(1.05)}
+      .cmd-panel{position:relative;width:100%;max-width:560px;background:var(--paper);border:1px solid var(--stone);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:min(70vh,560px);display:flex;flex-direction:column;animation:cmdIn .18s cubic-bezier(.22,1,.36,1)}
+      @keyframes cmdIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+      .cmd-search{display:flex;align-items:center;gap:10px;padding:14px 14px;border-bottom:1px solid var(--stone);color:var(--muted)}
+      .cmd-search input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:14px;font-family:"Plus Jakarta Sans",sans-serif}
+      .cmd-search input::placeholder{color:var(--muted);opacity:.7}
+      .cmd-esc{font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:.06em;border:1px solid var(--stone-2);padding:4px 6px;border-radius:6px;color:var(--muted);background:white}
+      .cmd-list-wrap{overflow:auto;flex:1;min-height:0;scrollbar-width:thin}
+      #cmdList{list-style:none;margin:0;padding:8px;display:grid;gap:2px}
+      .cmd-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;text-decoration:none;color:var(--ink-2);font-size:13.5px;line-height:1.4;border:1px solid transparent;text-align:left;width:100%;background:transparent}
+      .cmd-item:hover{background:color-mix(in srgb, var(--stone) 60%, transparent)}
+      .cmd-item[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+      .cmd-item[aria-selected="true"] .cmd-meta{color:rgba(255,255,255,.6)}
+      .cmd-item-left{display:flex;align-items:center;gap:10px;min-width:0}
+      .cmd-icon{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--stone);color:var(--muted);flex:0 0 28px;font-size:12px}
+      .cmd-item[aria-selected="true"] .cmd-icon{background:rgba(255,255,255,.15);color:white}
+      .cmd-title{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .cmd-meta{font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:.04em;color:var(--muted);white-space:nowrap}
+      .cmd-kbd{font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted-2);border:1px solid var(--stone-2);padding:2px 6px;border-radius:6px;background:white;flex:0 0 auto}
+      .cmd-empty{margin:24px 16px;text-align:center;color:var(--muted);font-size:13px}
+      .cmd-foot{display:flex;gap:14px;align-items:center;padding:8px 12px;border-top:1px solid var(--stone);font-size:11px;color:var(--muted-2);font-family:JetBrains Mono,monospace;flex-wrap:wrap}
+      .cmd-foot-hint{margin-left:auto;display:flex;gap:4px;align-items:center}
+      .cmd-foot-hint kbd{border:1px solid var(--stone-2);padding:1px 5px;border-radius:5px;background:white;font-family:inherit;font-size:10px}
+      html.dark .cmd-panel{background:#14181E;border-color:#252F3F}
+      html.dark .cmd-search{border-color:#252F3F}
+      html.dark .cmd-esc,html.dark .cmd-kbd,html.dark .cmd-foot-hint kbd{background:#1B1F2A;border-color:#2A3647;color:var(--muted)}
+      html.dark .cmd-item:hover{background:#1B1F2A}
+      html.dark .cmd-item[aria-selected="true"]{background:var(--ink);color:#0F1218}
+      html.dark .cmd-item[aria-selected="true"] .cmd-meta{color:rgba(15,18,24,.6)}
+      html.dark .cmd-item[aria-selected="true"] .cmd-icon{background:rgba(15,18,24,.12)}
+      @media (max-width:480px){.cmd-panel{max-width:100%}#cmdPalette{padding:12px}.cmd-foot{gap:8px}}
       @media print{
         .site-head,.site-foot,.back-to-top,.toast,.mouse-glow,.mouse-dot,.scroll-indicator,.skip,.btn,.hero-badges,.hero-meta,.activity-card,.cta-row{display:none !important}
         body{background:white;color:black}
