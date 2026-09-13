@@ -37,6 +37,11 @@ const p = prefixFor(lang);
   </div>
   <div class="wrap foot-bottom">
     <p>{t.copyright}</p>
-    <p>{t.built} <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></p>
+    <p class="built-with">{t.built} <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/astro/default.svg" alt="" width="16" height="16" loading="lazy" /> Astro</a></p>
   </div>
+  <style>
+    .built-with{display:inline-flex;align-items:center;gap:6px}
+    .built-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+    .built-link img{width:16px;height:16px;display:block;flex:0 0 16px}
+  </style>
 </footer>

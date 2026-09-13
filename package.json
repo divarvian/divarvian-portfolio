@@ -17,6 +17,7 @@
   },
   "allowScripts": {
     "esbuild": true,
-    "simple-icons": true
+    "simple-icons": true,
+    "jspdf": true
   }
 }

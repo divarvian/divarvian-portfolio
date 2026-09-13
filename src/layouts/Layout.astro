@@ -152,11 +152,11 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
       (function(){
         try{
           if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-          if(window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
           var glow=document.getElementById('mouseGlow');
           var dot=document.getElementById('mouseDot');
           if(!glow||!dot) return;
-          var gx=innerWidth/2,gy=160,dx=gx,dy=gy,tx=gx,ty=gy,show=false,raf=null;
+          var isCoarse=window.matchMedia('(hover: none), (pointer: coarse)').matches;
+          var gx=innerWidth/2,gy=160,dx=gx,dy=gy,tx=gx,ty=gy,show=false,raf=null,hideT=null;
           function loop(){
             gx+=(tx-gx)*0.08; gy+=(ty-gy)*0.08;
             dx+=(tx-dx)*0.35; dy+=(ty-dy)*0.35;
@@ -164,13 +164,22 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
             dot.style.transform='translate3d(calc('+dx+'px - 50%), calc('+dy+'px - 50%), 0)';
             if(show) raf=requestAnimationFrame(loop); else raf=null;
           }
-          function wake(){ if(!show){show=true;glow.style.opacity='1';dot.style.opacity='1';} if(!raf) raf=requestAnimationFrame(loop); }
-          addEventListener('mousemove',function(e){ tx=e.clientX; ty=e.clientY; wake(); },{passive:true});
-          document.addEventListener('mouseleave',function(){ show=false; glow.style.opacity='0'; dot.style.opacity='0'; if(raf){cancelAnimationFrame(raf);raf=null;} });
-          document.addEventListener('mouseover',function(e){
-            var h=e.target&&e.target.closest?e.target.closest('a,button'):null;
-            dot.classList.toggle('is-hover',!!h);
-          },{passive:true});
+          function wake(){ if(hideT){clearTimeout(hideT);hideT=null;} if(!show){show=true;glow.style.opacity='1';dot.style.opacity='1';} if(!raf) raf=requestAnimationFrame(loop); }
+          function hide(){ show=false; glow.style.opacity='0'; dot.style.opacity='0'; if(raf){cancelAnimationFrame(raf);raf=null;} }
+          function hideSoon(){ if(hideT) clearTimeout(hideT); hideT=setTimeout(hide,340); }
+          if(isCoarse){
+            addEventListener('touchstart',function(e){ var t=e.touches[0]; if(!t) return; tx=t.clientX; ty=t.clientY; wake(); },{passive:true});
+            addEventListener('touchmove',function(e){ var t=e.touches[0]; if(!t) return; tx=t.clientX; ty=t.clientY; wake(); },{passive:true});
+            addEventListener('touchend',hideSoon,{passive:true});
+            addEventListener('touchcancel',hideSoon,{passive:true});
+          } else {
+            addEventListener('mousemove',function(e){ tx=e.clientX; ty=e.clientY; wake(); },{passive:true});
+            document.addEventListener('mouseleave',hide);
+            document.addEventListener('mouseover',function(e){
+              var h=e.target&&e.target.closest?e.target.closest('a,button'):null;
+              dot.classList.toggle('is-hover',!!h);
+            },{passive:true});
+          }
         }catch(e){}
         })();
         (function(){
@@ -184,16 +193,44 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
             var backLabel=isEn?'Back to top':'Kembali ke atas';
             backBtn.setAttribute('aria-label',backLabel);
             backBtn.setAttribute('title',backLabel);
+            window.haptic=function(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} };
+            function haptic(ms){ return window.haptic(ms); }
             function showToast(msg){ toastEl.textContent=msg; toastEl.removeAttribute('hidden'); setTimeout(function(){ toastEl.setAttribute('hidden',''); },2200); }
             window.toast=showToast;
             var copyBtns=document.querySelectorAll('.copy-btn');
-            copyBtns.forEach(function(btn){ btn.addEventListener('click',function(e){ showToast(toastMsg); }); });
+            copyBtns.forEach(function(btn){ btn.addEventListener('click',function(e){ haptic(35); showToast(toastMsg); }); });
             function scrollUpdate(){ var scrolled=window.scrollY; var total=document.documentElement.scrollHeight-window.innerHeight; var progress=scrolled/total; scrollEl.style.transform='scaleX('+progress+')'; backBtn.hidden=scrolled<300; }
             scrollUpdate();
             window.addEventListener('scroll',scrollUpdate,{passive:true});
-            backBtn.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+            backBtn.addEventListener('click',function(){ haptic(10); window.scrollTo({top:0,behavior:'smooth'}); });
+            document.querySelectorAll('.mobile-dock a').forEach(function(a){ a.addEventListener('click',function(){ haptic(10); },{passive:true}); });
+            var themeBtn=document.getElementById('themeBtn'); if(themeBtn) themeBtn.addEventListener('click',function(){ haptic(12); });
           }catch(e){}
         })();
+      (function(){
+        var d=document.querySelector('.mobile-dock');
+        if(!d) return;
+        if(!window.matchMedia('(max-width: 720px)').matches) return;
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ d.classList.add('is-visible'); return; }
+        var ticking=false,lastY=window.scrollY;
+        function vis(show){ if(show) d.classList.add('is-visible'); else d.classList.remove('is-visible'); }
+        function onScroll(){
+          if(ticking) return;
+          ticking=true;
+          requestAnimationFrame(function(){
+            var y=window.scrollY;
+            var down=y>lastY;
+            var show= y>100 && (down || y>220);
+            if(y<=10) show=false;
+            vis(show);
+            lastY=y;
+            ticking=false;
+          });
+        }
+        vis(window.scrollY>140);
+        window.addEventListener('scroll',onScroll,{passive:true});
+        window.addEventListener('resize',function(){ if(!window.matchMedia('(max-width: 720px)').matches) vis(false); },{passive:true});
+      })();
     </script>
     <script is:inline>
       (function(){
@@ -270,6 +307,7 @@ const ogImageURL = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site)
             var txt='divarvian@gmail.com';
             if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(txt).catch(function(){}); }
             else{ try{ var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove(); }catch(e){} }
+            if(window.haptic) window.haptic(14);
             if(window.toast) window.toast(isEn?'Email copied':'Email disalin');
             return;
           }

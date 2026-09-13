@@ -6,7 +6,9 @@ const t = ui[lang].stack;
 
 const techLogos = [
   { name: 'Kotlin', color: '#7F52FF', slug: 'kotlin' },
+  { name: 'Jetpack Compose', color: '#4285F4', slug: 'jetpack-compose' },
   { name: 'Flutter', color: '#02569B', slug: 'flutter' },
+  { name: 'Dart', color: '#0175C2', slug: 'dart' },
   { name: 'Java', color: '#007396', slug: 'java' },
   { name: 'C++', color: '#00599C', slug: 'c-plusplus' },
   { name: 'JavaScript', color: '#F7DF1E', slug: 'javascript' },
@@ -14,7 +16,12 @@ const techLogos = [
   { name: 'Go', color: '#00ADD8', slug: 'go' },
   { name: 'Astro', color: '#FF5D01', slug: 'astro' },
   { name: 'Supabase', color: '#3ECF8E', slug: 'supabase' },
+  { name: 'MySQL', color: '#4479A1', slug: 'mysql' },
+  { name: 'PostgreSQL', color: '#336791', slug: 'postgresql' },
   { name: 'Git', color: '#F1502F', slug: 'git' },
+  { name: 'Android Studio', color: '#3DDC84', slug: 'android-studio' },
+  { name: 'VS Code', color: '#007ACC', slug: 'visual-studio-code' },
+  { name: 'Figma', color: '#F24E1E', slug: 'figma' },
   { name: 'Fedora', color: '#51A2DA', slug: 'fedora' }
 ];
 ---
@@ -34,20 +41,7 @@ const techLogos = [
       </div>
     ))}
   </div>
-  <div class="stack-grid">
-    <div class="stack-card win">
-      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">mobile.sh — arvian@fedora</span><span class="win-spacer"></span></div>
-      <div class="win-body"><h3>{t.mobileTitle}</h3><ul>{t.mobileItems.map((x) => <li><span>{x.l}</span><span>{x.r}</span></li>)}</ul><p class="meta-k" style="margin-top:10px">{t.countLabel}</p></div>
-    </div>
-    <div class="stack-card win">
-      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">system.sh — arvian@fedora</span><span class="win-spacer"></span></div>
-      <div class="win-body"><h3>{t.systemTitle}</h3><ul>{t.systemItems.map((x) => <li><span>{x.l}</span><span>{x.r}</span></li>)}</ul><p class="meta-k" style="margin-top:10px">{t.countLabel}</p></div>
-    </div>
-    <div class="stack-card win">
-      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">backend.sh — arvian@fedora</span><span class="win-spacer"></span></div>
-      <div class="win-body"><h3>{t.backendTitle}</h3><ul>{t.backendItems.map((x) => <li><span>{x.l}</span><span>{x.r}</span></li>)}</ul><p class="meta-k" style="margin-top:10px">{t.countLabel}</p></div>
-    </div>
-   </div>
+
   <style>
     .tech-logos{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:28px;justify-content:flex-start;align-items:center}
     .tech-logo{display:flex;align-items:center;gap:12px;padding:10px 16px;background:white;border:1px solid var(--stone);border-radius:10px;cursor:pointer;transition:all .28s ease;color:var(--muted);min-height:48px}

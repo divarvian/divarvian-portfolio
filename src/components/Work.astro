@@ -1,5 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import { ui, type Lang } from "../i18n/ui";
+import bingoShot from "../assets/BinGo.jpg";
+import kawalShot from "../assets/KawalZ.jpg";
 interface Props { lang?: Lang }
 const lang = Astro.props.lang ?? 'id';
 const t = ui[lang].work;
@@ -25,42 +28,60 @@ const t = ui[lang].work;
       <ul class="check-list">
         {t.bingoCheck.map((s) => <li>{s}</li>)}
       </ul>
+      {(t as any).bingoStats && (
+        <div class="project-stats" aria-label="Ringkasan dampak">
+          {(t as any).bingoStats.map((s: any) => (
+            <div class="stat"><span class="stat-v">{s.v}</span><span class="stat-k">{s.k}</span></div>
+          ))}
+        </div>
+      )}
       <div class="project-actions">
         <span class="pill">{t.bingoPill}</span>
         <a class="btn btn-ghost btn-sm" href="https://github.com/divarvian/BinGo-Raion-Internship" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0.3a12 12 0 0 0-3.79 23.4c0.6 0.11 0.82-0.26 0.82-0.58v-2.1c-3.34 0.73-4.04-1.61-4.04-1.61-0.55-1.39-1.34-1.76-1.34-1.76-1.09-0.75 0.08-0.73 0.08-0.73 1.2 0.08 1.83 1.23 1.83 1.23 1.07 1.84 2.81 1.31 3.5 1 0.11-0.78 0.42-1.31 0.76-1.61-2.67-0.3-5.48-1.34-5.48-5.95 0-1.31 0.47-2.38 1.24-3.22-0.12-0.3-0.54-1.52 0.12-3.17 0 0 1.01-0.32 3.3 1.23a11.5 11.5 0 0 1 6.0 0c2.29-1.55 3.3-1.23 3.3-1.23 0.66 1.65 0.24 2.87 0.12 3.17 0.77 0.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.65-5.49 5.95 0.43 0.37 0.81 1.1 0.81 2.22v3.29c0 0.32 0.22 0.69 0.82 0.58A12 12 0 0 0 12 0.3Z"/></svg>{lang === 'en' ? 'View on GitHub' : 'Lihat di GitHub'}</a>
       </div>
     </div>
-    <div class="project-visual" aria-hidden="true">
-      <div class="visual-frame">
-        <div class="frame-body">
-          <p class="frame-k">~/bingo — preview</p>
-          <div class="frame-lines"><span></span><span></span><span></span></div>
-          <div class="frame-cards"><span></span><span></span></div>
-        </div>
+    <div class="project-visual">
+      <div class="phone-row" aria-label="Screenshot BinGo">
+        <div class="phone-frame"><span class="phone-notch" aria-hidden="true"></span><Image src={bingoShot} alt="BinGo app screenshot" widths={[220,440]} sizes="220px" loading="lazy" /></div>
       </div>
       <p class="visual-caption">{t.visualCaption}</p>
     </div>
     </div>
   </article>
-  <div class="project-grid single">
-    <article class="project win project-compact">
-      <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">kawal.z — arvian@fedora</span><span class="win-spacer"></span></div>
-      <div class="win-body">
-      <div class="compact-head">
+  <article class="project project-feature win" style="margin-top:14px">
+    <div class="win-bar" aria-hidden="true"><span class="win-dots"><span></span><span></span><span></span></span><span class="win-title">kawal.z — arvian@fedora</span><span class="win-spacer"></span></div>
+    <div class="win-content">
+    <div class="project-text">
+      <div class="project-top">
         <span class="tag">{t.kawalTag}</span>
-        <h3>{t.kawalTitle}</h3>
-        <p>{t.kawalText}</p>
       </div>
-      <div class="compact-meta">
+      <h3>{t.kawalTitle}</h3>
+      <p>{t.kawalText}</p>
+      <div class="compact-meta" style="margin-top:12px">
+        <span class="pill award"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v6a6 6 0 0 1-6 6 6 6 0 0 1-6-6V4Z"/><path d="M6 7H4a3 3 0 0 0 3 3"/><path d="M18 7h2a3 3 0 0 1-3 3"/><path d="M12 16v4"/><path d="M8 20h8"/></svg>{(t as any).kawalAward}</span>
         <span class="pill">{t.kawalPill}</span>
         <span class="pill muted">{t.kawalPillMuted}</span>
+      </div>
+      {(t as any).kawalStats && (
+        <div class="project-stats" aria-label="Ringkasan dampak">
+          {(t as any).kawalStats.map((s: any) => (
+            <div class="stat"><span class="stat-v">{s.v}</span><span class="stat-k">{s.k}</span></div>
+          ))}
+        </div>
+      )}
+      {(t as any).kawalQuote && (
+        <blockquote class="project-quote"><p>“{(t as any).kawalQuote.text}”</p><cite>{(t as any).kawalQuote.author}</cite></blockquote>
+      )}
+      <div class="project-actions">
         <a class="btn btn-ghost btn-sm" href="https://github.com/divarvian/raion-hackjam-13" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0.3a12 12 0 0 0-3.79 23.4c0.6 0.11 0.82-0.26 0.82-0.58v-2.1c-3.34 0.73-4.04-1.61-4.04-1.61-0.55-1.39-1.34-1.76-1.34-1.76-1.09-0.75 0.08-0.73 0.08-0.73 1.2 0.08 1.83 1.23 1.83 1.23 1.07 1.84 2.81 1.31 3.5 1 0.11-0.78 0.42-1.31 0.76-1.61-2.67-0.3-5.48-1.34-5.48-5.95 0-1.31 0.47-2.38 1.24-3.22-0.12-0.3-0.54-1.52 0.12-3.17 0 0 1.01-0.32 3.3 1.23a11.5 11.5 0 0 1 6.0 0c2.29-1.55 3.3-1.23 3.3-1.23 0.66 1.65 0.24 2.87 0.12 3.17 0.77 0.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.65-5.49 5.95 0.43 0.37 0.81 1.1 0.81 2.22v3.29c0 0.32 0.22 0.69 0.82 0.58A12 12 0 0 0 12 0.3Z"/></svg>{lang === 'en' ? 'View on GitHub' : 'Lihat di GitHub'}</a>
         <a class="btn btn-ghost btn-sm" href="https://www.instagram.com/p/Dc22DFCoKP4/?img_index=2" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>{lang === 'en' ? 'View Demo' : 'Lihat Demo'}</a>
       </div>
-      <ul class="compact-list">
-        {t.kawalList.map((s) => <li>{s}</li>)}
-      </ul>
+    </div>
+    <div class="project-visual">
+      <div class="phone-row" aria-label="Screenshot Kawal.Z">
+        <div class="phone-frame"><span class="phone-notch" aria-hidden="true"></span><Image src={kawalShot} alt="Kawal.Z app screenshot" widths={[220,440]} sizes="220px" loading="lazy" /></div>
       </div>
-    </article>
-  </div>
+    </div>
+    </div>
+  </article>
 </section>

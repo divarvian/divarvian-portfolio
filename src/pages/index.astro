@@ -160,7 +160,9 @@ const canonical = lang === 'en' ? 'https://divarvian.my.id/en/' : 'https://divar
     }
 
     const sections = ['work','stack','about','contact'].map(id => document.getElementById(id)).filter(Boolean);
-    const navLinks = Array.from(document.querySelectorAll('.nav-desktop a[href*="#"], .mobile-menu a[href*="#"]'));
+    const navLinks = Array.from(document.querySelectorAll('.nav-desktop a[href*="#"], .mobile-menu a[href*="#"], .mobile-dock a[href*="#"]'));
+    const usesDock = document.querySelector('.mobile-dock a[data-dock="uses"]');
+    if(usesDock && !location.pathname.includes('/uses')) usesDock.removeAttribute('aria-current');
     if (sections.length && navLinks.length && 'IntersectionObserver' in window) {
       const spy = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -172,10 +174,11 @@ const canonical = lang === 'en' ? 'https://divarvian.my.id/en/' : 'https://divar
               if (hash === '#' + id) a.setAttribute('aria-current', 'true');
               else if (hash.startsWith('#')) a.removeAttribute('aria-current');
             });
+            if(usesDock) usesDock.removeAttribute('aria-current');
           }
         });
       }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
       sections.forEach(s => spy.observe(s));
-    }
+    } else if(usesDock){ usesDock.removeAttribute('aria-current'); }
   </script>
 </Layout>
